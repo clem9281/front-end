@@ -132,6 +132,7 @@ table {
 body,
 html {
   font-size: 62.5%;
+  font-family: "Roboto", sans-serif;
 }
 h1 {
   font-size: 3rem;
@@ -152,6 +153,9 @@ a {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: url(https://images.unsplash.com/photo-1527187162622-535b785f65f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1597&q=80);
+  background-position: center;
+  background-size: cover;
 }
 .login input {
   display: block;
@@ -159,4 +163,42 @@ a {
 .login button {
   display: block;
   margin: 10px auto;
+}
+.profile p,
+.profile h3,
+.profile a {
+  color: white;
+}
+.profile a {
+  text-decoration: none;
+}
+.profile h3 {
+  font-size: 2.4rem;
+}
+.profile nav {
+  background: #5c7e78ff;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.profile nav .brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile nav .brand img {
+  width: 50px;
+}
+.profile figure {
+  width: 90%;
+  margin: 0 auto;
+}
+.profile figure .profile-pic {
+  display: block;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 20px auto;
 }
