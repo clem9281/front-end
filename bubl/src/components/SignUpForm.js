@@ -1,17 +1,29 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import axios from "axios";
+import {signUpStart} from "../actions";
 
 class SignUpForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       information: {
-        firstName: "",
-        lastName: "",
+        name:'',
+        username:'',
         password: "",
-        interests: []
-      }
+        school_id: ''
+      },
+      schools: null,
     };
+  }
+  componentDidMount() {
+    axios.get('https://build-week-bubl.herokuapp.com/api/schools')
+    .then(res => this.setState({schools: res.data, information: {...this.state.information, school_id: res.data[0].id}}));
+  }
+  signUp = (e, info) => {
+    e.preventDefault();
+    console.log(this.state.information)
+   this.props.signUpStart(info);
   }
   handleChange = e => {
     this.setState({
@@ -22,26 +34,29 @@ class SignUpForm extends Component {
     });
   };
   render() {
-    return (
-      <section className="signup-form">
+      return (
+        <section className="signup-form">
         <div>
-          <form>
-            <label htmlFor="first-name">First Name</label>
-            <input type="text" name="first-name" />
-            <label htmlFor="last-name">Last Name</label>
-            <input type="text" name="last-name" />
+          <form onSubmit={e => this.signUp(e, this.state.information)}>
+            <label htmlFor="name">Name</label>
+            <input type="text" name="name" value={this.state.information.name} onChange={this.handleChange}/>
+            <label htmlFor="username">UserName</label>
+            <input type="text" name="username" value={this.state.information.username} onChange={this.handleChange}/>
             <label htmlFor="password">Password</label>
-            <input type="password" name="password" />
-            <label htmlFor="interests">Interests</label>
-            <input type="text" name="interests" />
+            <input type="password" name="password" value={this.state.information.password} onChange={this.handleChange}/>
+            <select name="school_id" id="" value={this.state.information.school_id} onChange={this.handleChange} >
+            {this.state.schools && this.state.schools.map(school => <option value={school.id} key={school.id} id={school.id}>{school.name}</option>)}
+            </select>
+            <button>Sign Up</button>
           </form>
         </div>
       </section>
-    );
+      )
+   
   }
 }
 
 export default connect(
   null,
-  {}
+  {signUpStart}
 )(SignUpForm);

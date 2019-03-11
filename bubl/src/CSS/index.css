@@ -132,7 +132,7 @@ table {
 body,
 html {
   font-size: 62.5%;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 h1 {
   font-size: 3rem;
@@ -145,17 +145,21 @@ label,
 input,
 button,
 li,
-a {
+a,
+i {
   font-size: 1.6rem;
+}
+.container {
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 .login {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url(https://images.unsplash.com/photo-1527187162622-535b785f65f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1597&q=80);
-  background-position: center;
-  background-size: cover;
+  background-image: url('../assets/lockers.jpg');
 }
 .login input {
   display: block;
@@ -164,41 +168,119 @@ a {
   display: block;
   margin: 10px auto;
 }
-.profile p,
-.profile h3,
-.profile a {
-  color: white;
+.login .white-bubl {
+  width: 100px;
 }
-.profile a {
-  text-decoration: none;
+.login .logo {
+  display: flex;
+  height: 100px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10%;
+}
+.login .logo h1 {
+  font-size: 3.5rem;
+}
+.profile {
+  text-align: center;
 }
 .profile h3 {
   font-size: 2.4rem;
 }
-.profile nav {
+.profile figure {
+  margin: 0 auto;
+}
+.profile figure .profile-pic {
+  display: block;
+  max-width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 20px auto;
+}
+nav {
   background: #5c7e78ff;
   height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.profile nav .brand {
+nav .brand {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.profile nav .brand img {
+nav .brand img {
   width: 50px;
 }
-.profile figure {
-  width: 90%;
-  margin: 0 auto;
+nav p,
+nav h3,
+nav a {
+  color: white;
 }
-.profile figure .profile-pic {
-  display: block;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  object-fit: cover;
+nav a {
+  text-decoration: none;
+}
+nav h3 {
+  font-size: 2.4rem;
+}
+.post {
+  text-align: left;
   margin: 20px auto;
+  width: 90%;
+  line-height: 1.25;
+}
+@media (min-width: 800px) {
+  .post {
+    width: 75%;
+  }
+}
+.post p,
+.post h3,
+.post a {
+  color: black;
+}
+.post h3 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.post .timestamp {
+  color: grey;
+}
+.post i {
+  font-size: 2rem;
+  margin-right: 1.6rem;
+}
+.post .comment-user {
+  font-weight: 600;
+}
+.interests {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 3% 0;
+}
+.interests li {
+  border: 1px solid black;
+  padding: 10px 15px;
+  border-radius: 20px;
+}
+.bubls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bubls .bubl {
+  font-size: 2rem;
+}
+.signup-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.signup-form input {
+  display: block;
+}
+.signup-form select {
+  display: block;
 }

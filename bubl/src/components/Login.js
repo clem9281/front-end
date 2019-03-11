@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loginStart } from "../actions";
-// import "../CSS/index.css";
+import {loginStart} from "../actions";
+import {Link} from "react-router-dom";
+import bublWhite from '../assets/bubl-logo-white.png';
+import "../CSS/index.css";
 
 class Login extends Component {
   state = {
@@ -20,18 +22,24 @@ class Login extends Component {
     });
   };
 
-  // login = e => {
-  //     e.preventDefault();
-  //     this.props.login(this.state.credentials).then(() => {
-  //         this.props.history.push('');
-  //     });
-  // };
+  login = (e, creds)=> {
+      e.preventDefault();
+      this.props.loginStart(creds)
+      .then(() => {
+          this.props.history.push('/');
+      });
+  };
   render() {
+    console.log(this.props);
     const { username, password } = this.state.credentials;
     return (
       <section className="login">
         <div>
-          <form>
+            <div className='logo'>
+                <img className='white-bubl' src={bublWhite} alt='white bubble' />
+                <h1>Bubl</h1>
+            </div>
+          <form onSubmit={e => this.login(e, this.state.credentials)}>
             <label htmlFor="username">Username</label>
             <input
               type="text"
@@ -47,6 +55,7 @@ class Login extends Component {
               onChange={this.handleChange}
             />
             <button>Login</button>
+            <Link to='/signup'>Sign Up </Link>
           </form>
         </div>
       </section>
@@ -56,5 +65,5 @@ class Login extends Component {
 
 export default connect(
   null,
-  {}
+  {loginStart}
 )(Login);
