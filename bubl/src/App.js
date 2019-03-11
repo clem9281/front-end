@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, Route} from "react-router-dom"; 
+import Login from './components/Login';
+import Profile from './components/Profile';
+import Bubls from "./components/Bubls";
+import PrivateRoute from "./components/PrivateRoute";
+import SignUpForm from "./components/SignUpForm";
 
 class App extends Component {
   render() {
     return (
+      <Router>
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+
+      <Route path="/login" render={props => <Login {...props}/>}></Route>
+      <Route path="/signup" render={props => <SignUpForm {...props} />} />
+      <PrivateRoute exact path="/" component={Profile} />
+      
+      {/* <Profile /> */}
+          {/* <Login /> */}
+          
       </div>
+      </Router>
     );
   }
 }
