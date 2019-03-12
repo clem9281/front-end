@@ -1,74 +1,137 @@
 import {
-    LOGIN_START,
-    LOG_OUT,
-    LOGIN_SUCCESS,
-    LOGIN_FAILURE,
-    GETPOSTS_FAILURE,
-    GETPOSTS_START,
-    GETPOSTS_SUCCESS,
-    SIGNUP_START,
-    SIGNUP_FAILURE,
-    SIGNUP_SUCCESS
-  } from "../actions";
-  
-  const initialState = {
-    loggingIn: false,
-    loggingOut: false,
-    token: null,
-    error: null
-  };
-  
-  export const reducer = (state = initialState, action) => {
-    console.log("reducer", action);
-    switch (action.type) {
-      case LOGIN_START:
-        return {
-          ...state,
-          loggingIn: true
-        };
-      case LOGIN_SUCCESS:
-        return {
-          ...state,
-          loggingIn: false,
-          token: action.payload
-        };
-      case LOGIN_FAILURE:
-        return {
-          ...state,
-          loggingIn: false,
-          token: null,
-          error: action.payload
-        };
-      case SIGNUP_START:
-        return {
-          ...state
-        };
-      case SIGNUP_SUCCESS:
-        return {
-          ...state
-        };
-      case SIGNUP_FAILURE:
-        return {
-          ...state
-        };
-      case GETPOSTS_START:
-        return {
-          ...state
-        };
-      case GETPOSTS_SUCCESS:
-        return {
-          ...state
-        };
-      case GETPOSTS_FAILURE:
-        return {
-          ...state
-        };
-      case LOG_OUT:
-        return {
-          ...state
-        };
-      default:
-        return state;
-    }
-  };
-  
+  LOGIN_START,
+  LOG_OUT,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+  GETPOSTS_FAILURE,
+  GETPOSTS_START,
+  GETPOSTS_SUCCESS,
+  SIGNUP_START,
+  SIGNUP_FAILURE,
+  SIGNUP_SUCCESS,
+  GETUSERINFO_START,
+  GETUSERINFO_SUCCESS,
+  GETUSERINFO_FAILURE,
+  GETBUBLPOSTS_START,
+  GETBUBLPOSTS_SUCCESS,
+  GETBUBLPOSTS_FAILURE
+} from "../actions";
+
+const initialState = {
+  loggingIn: false,
+  loggingOut: false,
+  signingUp: false,
+  gettingPosts: false,
+  gettingUserInfo: false,
+  gettingBublPosts: false,
+  allSchoolBubls: null,
+  bublPosts: null,
+  token: null,
+  error: null,
+  userPosts: null,
+  userInfo: null
+};
+
+export const reducer = (state = initialState, action) => {
+  console.log("reducer", action);
+  switch (action.type) {
+    case LOGIN_START:
+      return {
+        ...state,
+        loggingIn: true
+      };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        loggingIn: false,
+        token: action.payload,
+        error: null
+      };
+    case LOGIN_FAILURE:
+      return {
+        ...state,
+        loggingIn: false,
+        token: null,
+        error: action.payload
+      };
+    case SIGNUP_START:
+      return {
+        ...state,
+        signingUp: true
+      };
+    case SIGNUP_SUCCESS:
+      return {
+        ...state,
+        signingUp: false,
+        error: null
+      };
+    case SIGNUP_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      };
+    case GETPOSTS_START:
+      return {
+        ...state,
+        gettingPosts: true
+      };
+    case GETPOSTS_SUCCESS:
+      return {
+        ...state,
+        gettingPosts: false,
+        userPosts: action.payload,
+        error: null
+      };
+    case GETPOSTS_FAILURE:
+      return {
+        ...state,
+        userPosts: null,
+        gettingPosts: false,
+        error: action.payload
+      };
+    case GETUSERINFO_START:
+      return {
+        ...state,
+        gettingUserInfo: true
+      };
+    case GETUSERINFO_SUCCESS:
+      return {
+        ...state,
+        gettingUserInfo: false,
+        error: null,
+        userInfo: action.payload
+      };
+    case GETUSERINFO_FAILURE:
+      return {
+        ...state,
+        gettingUserInfo: false,
+        user: null,
+        error: action.payload
+      };
+    case GETBUBLPOSTS_START:
+      return {
+        ...state,
+        gettingBublPosts: true
+      };
+    case GETBUBLPOSTS_SUCCESS:
+      return {
+        ...state,
+        gettingBublPosts: false,
+        error: null,
+        bublPosts: action.payload
+      };
+    case GETBUBLPOSTS_FAILURE:
+      return {
+        ...state,
+        gettingBublPosts: false,
+        error: action.payload,
+        bublPosts: null
+      };
+    case LOG_OUT:
+      return {
+        ...state
+      };
+    default:
+      return state;
+  }
+};

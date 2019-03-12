@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const LOGIN_START = "LOGIN_START";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -9,26 +9,97 @@ export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
 export const GETPOSTS_START = "GETPOSTS_START";
 export const GETPOSTS_SUCCESS = "GETPOSTS_SUCCESS";
 export const GETPOSTS_FAILURE = "GETPOSTS_FAILURE";
+export const GETUSERINFO_START = "GETUSERINFO_START";
+export const GETUSERINFO_SUCCESS = "GETUSERINFO_SUCCESS";
+export const GETUSERINFO_FAILURE = "GETUSERINFO_FAILURE";
+export const GETSCHOOLBUBLS_START = "GETSCHOOLBUBLS_START";
+export const GETSCHOOLBUBLS_SUCCESS = "GETSCHOOLBUBLS_SUCCESS";
+export const GETSCHOOLBUBLS_FAILURE = "GETSCHOOLBUBLS_FAILURE";
+export const GETBUBLPOSTS_START = "GETBUBLPOSTS_START";
+export const GETBUBLPOSTS_SUCCESS = "GETBUBLPOSTS_SUCCESS";
+export const GETBUBLPOSTS_FAILURE = "GETBUBLPOSTS_FAILURE";
 export const LOG_OUT = "LOG_OUT";
 
-export const loginStart = (creds) => dispatch => {
-    dispatch({type: LOGIN_START});
-    return axios.post('https://build-week-bubl.herokuapp.com/auth/login', creds)
+export const loginStart = creds => dispatch => {
+  dispatch({ type: LOGIN_START });
+  return axios
+    .post("https://build-week-bubl.herokuapp.com/auth/login", creds)
     .then(res => {
-        localStorage.setItem('userToken', res.data.token);
-        dispatch({type: LOGIN_SUCCESS, payload: res.data.token});
+      localStorage.setItem("userToken", res.data.token);
+      dispatch({ type: LOGIN_SUCCESS, payload: res.data.token });
     })
-    .catch(err => dispatch({type: LOGIN_FAILURE, payload: err.response.data.message}));
-}
+    .catch(err =>
+      dispatch({ type: LOGIN_FAILURE, payload: err.response.data.message })
+    );
+};
 export const signUpStart = info => dispatch => {
-    dispatch({type: SIGNUP_START});
-    return axios.post('https://build-week-bubl.herokuapp.com/auth/login', info)
-    .then(res => console.log(res));
-}
-export const logOut = () => dispatch => {
-    dispatch({ type: LOG_OUT});
-    return(
-        localStorage.clear()
-    )
+  dispatch({ type: SIGNUP_START });
+  return axios
+    .post("https://build-week-bubl.herokuapp.com/auth/register", info)
+    .then(res => dispatch({ type: SIGNUP_SUCCESS }))
+    .catch(err =>
+      dispatch({ type: SIGNUP_FAILURE, payload: err.response.data.message })
+    );
 };
 
+export const getPostsStart = () => dispatch => {
+  dispatch({ type: GETPOSTS_START });
+  axios
+    .get("https://build-week-bubl.herokuapp.com/api/posts", {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => dispatch({ type: GETPOSTS_SUCCESS, payload: res.data }))
+    .catch(err =>
+      dispatch({ type: GETPOSTS_FAILURE, payload: err.response.data.message })
+    );
+};
+
+export const getUserInfo = () => dispatch => {
+  dispatch({ type: GETUSERINFO_START });
+  axios
+    .get("https://build-week-bubl.herokuapp.com/api/users/me", {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => dispatch({ type: GETUSERINFO_SUCCESS, payload: res.data }))
+    .catch(err =>
+      dispatch({
+        type: GETUSERINFO_FAILURE,
+        payload: err.response.data.message
+      })
+    );
+};
+export const getBublPosts = id => dispatch => {
+  dispatch({ type: GETBUBLPOSTS_START });
+  return axios
+    .get(`https://build-week-bubl.herokuapp.com/api/posts/filter/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => dispatch({ type: GETBUBLPOSTS_SUCCESS, payload: res.data }))
+    .catch(err =>
+      dispatch({
+        type: GETBUBLPOSTS_FAILURE,
+        payload: err.response.data.message
+      })
+    );
+};
+export const getSchoolBubls = () => dispatch => {
+  dispatch({ type: GETSCHOOLBUBLS_START });
+  axios
+    .get(`https://build-week-bubl.herokuapp.com/api/bubbles`, {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err.response));
+};
+export const logOut = () => dispatch => {
+  dispatch({ type: LOG_OUT });
+  return localStorage.clear();
+};
