@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "fuzzy-search": "^3.0.1",
     "history": "^4.7.2",
     "less-watch-compiler": "^1.13.0",
     "moment": "^2.24.0",

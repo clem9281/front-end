@@ -18,6 +18,9 @@ export const GETSCHOOLBUBLS_FAILURE = "GETSCHOOLBUBLS_FAILURE";
 export const GETBUBLPOSTS_START = "GETBUBLPOSTS_START";
 export const GETBUBLPOSTS_SUCCESS = "GETBUBLPOSTS_SUCCESS";
 export const GETBUBLPOSTS_FAILURE = "GETBUBLPOSTS_FAILURE";
+// export const ADD_POST_START = "ADD_POST_START";
+// export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
+// export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
 export const LOG_OUT = "LOG_OUT";
 
 export const loginStart = creds => dispatch => {
@@ -55,7 +58,6 @@ export const getPostsStart = () => dispatch => {
       dispatch({ type: GETPOSTS_FAILURE, payload: err.response.data.message })
     );
 };
-
 export const getUserInfo = () => dispatch => {
   dispatch({ type: GETUSERINFO_START });
   axios
@@ -80,7 +82,10 @@ export const getBublPosts = id => dispatch => {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(res => dispatch({ type: GETBUBLPOSTS_SUCCESS, payload: res.data }))
+    .then(res => {
+      console.log(res);
+      dispatch({ type: GETBUBLPOSTS_SUCCESS, payload: res.data });
+    })
     .catch(err =>
       dispatch({
         type: GETBUBLPOSTS_FAILURE,
@@ -96,9 +101,31 @@ export const getSchoolBubls = () => dispatch => {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(res => console.log(res))
-    .catch(err => console.log(err.response));
+    .then(res => dispatch({ type: GETSCHOOLBUBLS_SUCCESS, payload: res.data }))
+    .catch(err =>
+      dispatch({
+        type: GETSCHOOLBUBLS_FAILURE,
+        payload: err.response.data.message
+      })
+    );
 };
+
+// export const addPost = newPost => dispatch => {
+//   dispatch({ type: ADD_POST_START });
+//   axios
+//     .post("", newPost, {
+//       headers: { Authorization: localStorage.getItem("userToken") }
+//     })
+//     .then(res => {
+//       // dispatch({ type: ADD_POST_SUCCESS, payload: res.data})
+//       console.log(res.data);
+//     })
+//     .catch(err => {
+//       // dispatch({ type: ADD_POST_FAILURE})
+//       console.log(err);
+//     });
+// };
+
 export const logOut = () => dispatch => {
   dispatch({ type: LOG_OUT });
   return localStorage.clear();

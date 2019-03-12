@@ -11,15 +11,15 @@ import { getUserInfo } from "../actions";
 
 class Profile extends Component {
   componentDidMount() {
+    console.log("profile mount", this.props);
     this.props.getUserInfo();
   }
   render() {
-    console.log(this.props);
+    console.log("profile render", this.props);
     if (this.props.userInfo) {
       const { bio, bubbles, id, name, picture, username } = this.props.userInfo;
       return (
         <section className="profile">
-          {/* <NavBar /> */}
           <div className="container">
             <figure>
               <img
