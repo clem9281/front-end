@@ -8,15 +8,22 @@ import {
   GETPOSTS_SUCCESS,
   SIGNUP_START,
   SIGNUP_FAILURE,
-  SIGNUP_SUCCESS
+  SIGNUP_SUCCESS,
+  GETUSERINFO_START,
+  GETUSERINFO_SUCCESS,
+  GETUSERINFO_FAILURE
 } from "../actions";
 
 const initialState = {
   loggingIn: false,
   loggingOut: false,
   signingUp: false,
+  gettingPosts: false,
+  gettingUserInfo: false,
   token: null,
-  error: null
+  error: null,
+  userPosts: null,
+  userInfo: null
 };
 
 export const reducer = (state = initialState, action) => {
@@ -59,15 +66,41 @@ export const reducer = (state = initialState, action) => {
       };
     case GETPOSTS_START:
       return {
-        ...state
+        ...state,
+        gettingPosts: true
       };
     case GETPOSTS_SUCCESS:
       return {
-        ...state
+        ...state,
+        gettingPosts: false,
+        userPosts: action.payload,
+        error: null
       };
     case GETPOSTS_FAILURE:
       return {
-        ...state
+        ...state,
+        userPosts: null,
+        gettingPosts: false,
+        error: action.payload
+      };
+    case GETUSERINFO_START:
+      return {
+        ...state,
+        gettingUserInfo: true
+      };
+    case GETUSERINFO_SUCCESS:
+      return {
+        ...state,
+        gettingUserInfo: false,
+        error: null,
+        userInfo: action.payload
+      };
+    case GETUSERINFO_FAILURE:
+      return {
+        ...state,
+        gettingUserInfo: false,
+        user: null,
+        error: action.payload
       };
     case LOG_OUT:
       return {
