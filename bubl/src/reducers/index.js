@@ -14,7 +14,13 @@ import {
   GETUSERINFO_FAILURE,
   GETBUBLPOSTS_START,
   GETBUBLPOSTS_SUCCESS,
-  GETBUBLPOSTS_FAILURE
+  GETBUBLPOSTS_FAILURE,
+  GETSCHOOLBUBLS_START,
+  GETSCHOOLBUBLS_SUCCESS,
+  GETSCHOOLBUBLS_FAILURE,
+  ADD_POST_START,
+  ADD_POST_SUCCESS,
+  ADD_POST_FAILURE
 } from "../actions";
 
 const initialState = {
@@ -24,12 +30,14 @@ const initialState = {
   gettingPosts: false,
   gettingUserInfo: false,
   gettingBublPosts: false,
+  gettingSchoolBubls: false,
   allSchoolBubls: null,
   bublPosts: null,
   token: null,
   error: null,
   userPosts: null,
-  userInfo: null
+  userInfo: null,
+  addingPost: false
 };
 
 export const reducer = (state = initialState, action) => {
@@ -127,6 +135,37 @@ export const reducer = (state = initialState, action) => {
         error: action.payload,
         bublPosts: null
       };
+    case GETSCHOOLBUBLS_START:
+      return {
+        ...state,
+        gettingSchoolBubls: true
+      };
+    case GETSCHOOLBUBLS_SUCCESS:
+      return {
+        ...state,
+        gettingSchoolBubls: false,
+        allSchoolBubls: action.payload,
+        error: null
+      };
+    case GETSCHOOLBUBLS_FAILURE:
+      return {
+        ...state,
+        gettingSchoolBubls: false,
+        allSchoolBubls: null,
+        error: action.payload
+      };
+    // case ADD_POST_START:
+    // return{
+    //   ...state
+    // };
+    // case ADD_POST_SUCCESS:
+    // return{
+    //   ...state
+    // };
+    // case ADD_POST_FAILURE:
+    // return{
+    //   ...state
+    // };
     case LOG_OUT:
       return {
         ...state
