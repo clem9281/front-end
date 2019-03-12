@@ -12,6 +12,12 @@ export const GETPOSTS_FAILURE = "GETPOSTS_FAILURE";
 export const GETUSERINFO_START = "GETUSERINFO_START";
 export const GETUSERINFO_SUCCESS = "GETUSERINFO_SUCCESS";
 export const GETUSERINFO_FAILURE = "GETUSERINFO_FAILURE";
+export const GETSCHOOLBUBLS_START = "GETSCHOOLBUBLS_START";
+export const GETSCHOOLBUBLS_SUCCESS = "GETSCHOOLBUBLS_SUCCESS";
+export const GETSCHOOLBUBLS_FAILURE = "GETSCHOOLBUBLS_FAILURE";
+export const GETBUBLPOSTS_START = "GETBUBLPOSTS_START";
+export const GETBUBLPOSTS_SUCCESS = "GETBUBLPOSTS_SUCCESS";
+export const GETBUBLPOSTS_FAILURE = "GETBUBLPOSTS_FAILURE";
 export const LOG_OUT = "LOG_OUT";
 
 export const loginStart = creds => dispatch => {
@@ -65,6 +71,33 @@ export const getUserInfo = () => dispatch => {
         payload: err.response.data.message
       })
     );
+};
+export const getBublPosts = id => dispatch => {
+  dispatch({ type: GETBUBLPOSTS_START });
+  return axios
+    .get(`https://build-week-bubl.herokuapp.com/api/posts/filter/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => dispatch({ type: GETBUBLPOSTS_SUCCESS, payload: res.data }))
+    .catch(err =>
+      dispatch({
+        type: GETBUBLPOSTS_FAILURE,
+        payload: err.response.data.message
+      })
+    );
+};
+export const getSchoolBubls = () => dispatch => {
+  dispatch({ type: GETSCHOOLBUBLS_START });
+  axios
+    .get(`https://build-week-bubl.herokuapp.com/api/bubbles`, {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err.response));
 };
 export const logOut = () => dispatch => {
   dispatch({ type: LOG_OUT });

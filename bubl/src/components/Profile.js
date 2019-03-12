@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import { NavLink, Link, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import PrivateRoute from "./PrivateRoute";
 import NavBar from "./NavBar";
 import UserPosts from "./UserPosts";
-import Post from "./Post";
+import PostList from "./PostList";
 import InterestList from "./InterestList";
+import Bubls from "./Bubls";
 import { getUserInfo } from "../actions";
 
 class Profile extends Component {
@@ -16,7 +19,7 @@ class Profile extends Component {
       const { bio, bubbles, id, name, picture, username } = this.props.userInfo;
       return (
         <section className="profile">
-          <NavBar />
+          {/* <NavBar /> */}
           <div className="container">
             <figure>
               <img
@@ -39,7 +42,9 @@ class Profile extends Component {
 
 const mapStateToProps = ({ userInfo }) => ({ userInfo });
 
-export default connect(
-  mapStateToProps,
-  { getUserInfo }
-)(Profile);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { getUserInfo }
+  )(Profile)
+);

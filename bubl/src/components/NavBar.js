@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import bublWhite from "../assets/bubl-logo-white.png";
+import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { logOut } from "../actions";
 
 class NavBar extends Component {
   state = {};
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {};
-  // }
 
   logOut = e => {
     this.props.logOut();
@@ -24,7 +21,12 @@ class NavBar extends Component {
             <h3>BUBL</h3>
           </div>
           <div className="links">
-            <a href="#">Profile Settings or Something</a>
+            <NavLink exact to="/bubls">
+              My Bubls
+            </NavLink>
+            <NavLink exact to="/">
+              Profile
+            </NavLink>
             <button onClick={this.logOut}> Log Out </button>
           </div>
         </nav>
@@ -33,7 +35,9 @@ class NavBar extends Component {
   }
 }
 
-export default connect(
-  null,
-  { logOut }
-)(NavBar);
+export default withRouter(
+  connect(
+    null,
+    { logOut }
+  )(NavBar)
+);

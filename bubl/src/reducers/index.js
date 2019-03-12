@@ -11,7 +11,10 @@ import {
   SIGNUP_SUCCESS,
   GETUSERINFO_START,
   GETUSERINFO_SUCCESS,
-  GETUSERINFO_FAILURE
+  GETUSERINFO_FAILURE,
+  GETBUBLPOSTS_START,
+  GETBUBLPOSTS_SUCCESS,
+  GETBUBLPOSTS_FAILURE
 } from "../actions";
 
 const initialState = {
@@ -20,6 +23,9 @@ const initialState = {
   signingUp: false,
   gettingPosts: false,
   gettingUserInfo: false,
+  gettingBublPosts: false,
+  allSchoolBubls: null,
+  bublPosts: null,
   token: null,
   error: null,
   userPosts: null,
@@ -101,6 +107,25 @@ export const reducer = (state = initialState, action) => {
         gettingUserInfo: false,
         user: null,
         error: action.payload
+      };
+    case GETBUBLPOSTS_START:
+      return {
+        ...state,
+        gettingBublPosts: true
+      };
+    case GETBUBLPOSTS_SUCCESS:
+      return {
+        ...state,
+        gettingBublPosts: false,
+        error: null,
+        bublPosts: action.payload
+      };
+    case GETBUBLPOSTS_FAILURE:
+      return {
+        ...state,
+        gettingBublPosts: false,
+        error: action.payload,
+        bublPosts: null
       };
     case LOG_OUT:
       return {
