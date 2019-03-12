@@ -17,6 +17,15 @@ class Bubls extends Component {
       this.props.getUserInfo();
     }
     console.log(this.props.allSchoolBubls);
+  }
+  handleFocus = () => {
+    this.props.getSchoolBubls();
+  };
+  handleClick = id => {
+    this.props.getBublPosts(id).then(this.props.history.push(`bubls/${id}`));
+  };
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
     if (this.props.allSchoolBubls && this.state.bublSearch) {
       console.log(1);
       const searcher = new FuzzySearch(this.props.allSchoolBubls, ["bubble"]);
@@ -27,15 +36,6 @@ class Bubls extends Component {
       const result = this.props.allSchoolBubls;
       this.setState({ result: result });
     }
-  }
-  handleFocus = () => {
-    this.props.getSchoolBubls();
-  };
-  handleClick = id => {
-    this.props.getBublPosts(id).then(this.props.history.push(`bubls/${id}`));
-  };
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
   };
   render() {
     console.log(this.state.result);
