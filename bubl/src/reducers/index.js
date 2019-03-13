@@ -3,6 +3,9 @@ import {
   LOG_OUT,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  GETSCHOOLS_START,
+  GETSCHOOLS_SUCCESS,
+  GETSCHOOLS_FAILURE,
   GETPOSTS_FAILURE,
   GETPOSTS_START,
   GETPOSTS_SUCCESS,
@@ -20,20 +23,24 @@ import {
   GETSCHOOLBUBLS_FAILURE,
   ADD_POST_START,
   ADD_POST_SUCCESS,
-  ADD_POST_FAILURE
+  ADD_POST_FAILURE,
+  CLEAR_ERROR
 } from "../actions";
 
 const initialState = {
   loggingIn: false,
   loggingOut: false,
+  gettingSchools: false,
   signingUp: false,
   gettingPosts: false,
   gettingUserInfo: false,
   gettingBublPosts: false,
   gettingSchoolBubls: false,
+  schools: null,
   allSchoolBubls: null,
   bublPosts: null,
   token: null,
+  schoolsError: null,
   error: null,
   userPosts: null,
   userInfo: null,
@@ -62,6 +69,26 @@ export const reducer = (state = initialState, action) => {
         token: null,
         error: action.payload
       };
+    case GETSCHOOLS_START:
+      return {
+        ...state,
+        gettingSchools: true
+      };
+    case GETSCHOOLS_SUCCESS:
+      return {
+        ...state,
+        gettingSchools: false,
+        schools: action.payload,
+        schoolsError: null
+      };
+    case GETSCHOOLS_FAILURE:
+      return {
+        ...state,
+        gettingSchools: false,
+        schoolError: true,
+        schools: null
+      };
+
     case SIGNUP_START:
       return {
         ...state,
@@ -76,6 +103,7 @@ export const reducer = (state = initialState, action) => {
     case SIGNUP_FAILURE:
       return {
         ...state,
+        signingUp: false,
         error: action.payload
       };
     case GETPOSTS_START:
@@ -166,6 +194,11 @@ export const reducer = (state = initialState, action) => {
     // return{
     //   ...state
     // };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null
+      };
     case LOG_OUT:
       return {
         ...state

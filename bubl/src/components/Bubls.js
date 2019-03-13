@@ -16,41 +16,45 @@ class Bubls extends Component {
     if (!this.props.userInfo) {
       this.props.getUserInfo();
     }
-    console.log(this.props.allSchoolBubls);
   }
   handleFocus = () => {
-    this.props.getSchoolBubls();
+    this.props.getSchoolBubls().then(() => {
+      if (this.props.allSchoolBubls && this.state.bublSearch.length === 0) {
+        this.setState({ result: this.props.allSchoolBubls });
+      }
+    });
   };
   handleClick = id => {
     this.props.getBublPosts(id).then(this.props.history.push(`bubls/${id}`));
   };
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    if (this.props.allSchoolBubls && this.state.bublSearch) {
-      console.log(1);
+    if (this.props.allSchoolBubls && e.target.value.length > 0) {
       const searcher = new FuzzySearch(this.props.allSchoolBubls, ["bubble"]);
       const result = searcher.search(this.state.bublSearch);
       this.setState({ result: result });
     } else if (this.props.allSchoolBubls) {
-      console.log(2);
       const result = this.props.allSchoolBubls;
       this.setState({ result: result });
     }
   };
   render() {
-    console.log(this.state.result);
     if (this.props.userInfo) {
       return (
-        <section className="bubls container">
-          {this.props.userInfo.bubbles.map(bubl => (
-            <div
-              className="bubl"
-              key={bubl.id}
-              onClick={() => this.handleClick(bubl.id)}
-            >
-              {bubl.bubble}
-            </div>
-          ))}
+        <section className="bubls-area container">
+          <h2>My Bubls</h2>
+          <div className="bubls">
+            {this.props.userInfo.bubbles.map(bubl => (
+              <div
+                className="bubl"
+                key={bubl.id}
+                onClick={() => this.handleClick(bubl.id)}
+              >
+                <div className="accent" />
+                {bubl.bubble}
+              </div>
+            ))}
+          </div>
           <form>
             <input
               type="text"
@@ -58,6 +62,7 @@ class Bubls extends Component {
               onFocus={this.handleFocus}
               value={this.state.bublSearch}
               onChange={this.handleChange}
+              placeholder="Find Bubls"
             />
           </form>
           <ul>

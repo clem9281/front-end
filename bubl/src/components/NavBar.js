@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import bublWhite from "../assets/bubl-logo-white.png";
+import bublLogo from "../assets/bubl-logo.png";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { logOut } from "../actions";
@@ -17,8 +17,7 @@ class NavBar extends Component {
       <header>
         <nav>
           <div className="brand">
-            <img src={bublWhite} alt="" />
-            <h3>BUBL</h3>
+            <img src={bublLogo} alt="" />
           </div>
           <div className="links">
             <NavLink exact to="/bubls">

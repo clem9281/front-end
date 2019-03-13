@@ -6,6 +6,9 @@ export const LOGIN_FAILURE = "LOGIN_FAILURE";
 export const SIGNUP_START = "SIGNUP_START";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
+export const GETSCHOOLS_START = "GETSCHOOLS_START";
+export const GETSCHOOLS_SUCCESS = "GETSCHOOLS_SUCCESS";
+export const GETSCHOOLS_FAILURE = "GETSCHOOLS_FAILURE";
 export const GETPOSTS_START = "GETPOSTS_START";
 export const GETPOSTS_SUCCESS = "GETPOSTS_SUCCESS";
 export const GETPOSTS_FAILURE = "GETPOSTS_FAILURE";
@@ -21,6 +24,7 @@ export const GETBUBLPOSTS_FAILURE = "GETBUBLPOSTS_FAILURE";
 // export const ADD_POST_START = "ADD_POST_START";
 // export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 // export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
+export const CLEAR_ERROR = "CLEAR_ERROR";
 export const LOG_OUT = "LOG_OUT";
 
 export const loginStart = creds => dispatch => {
@@ -35,6 +39,18 @@ export const loginStart = creds => dispatch => {
       dispatch({ type: LOGIN_FAILURE, payload: err.response.data.message })
     );
 };
+
+export const getSchoolsStart = info => dispatch => {
+  dispatch({ type: GETSCHOOLS_START });
+  return axios
+    .get("https://build-week-bubl.herokuapp.com/api/schools", info)
+    .then(res => dispatch({ type: GETSCHOOLS_SUCCESS, payload: res.data }))
+    .catch(err => {
+      console.error(err);
+      dispatch({ type: GETSCHOOLS_FAILURE });
+    });
+};
+
 export const signUpStart = info => dispatch => {
   dispatch({ type: SIGNUP_START });
   return axios
@@ -95,7 +111,7 @@ export const getBublPosts = id => dispatch => {
 };
 export const getSchoolBubls = () => dispatch => {
   dispatch({ type: GETSCHOOLBUBLS_START });
-  axios
+  return axios
     .get(`https://build-week-bubl.herokuapp.com/api/bubbles`, {
       headers: {
         Authorization: localStorage.getItem("userToken")
@@ -109,7 +125,9 @@ export const getSchoolBubls = () => dispatch => {
       })
     );
 };
-
+export const clearError = () => dispatch => {
+  dispatch({ type: CLEAR_ERROR });
+};
 // export const addPost = newPost => dispatch => {
 //   dispatch({ type: ADD_POST_START });
 //   axios
