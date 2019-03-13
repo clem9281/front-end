@@ -157,6 +157,9 @@ i {
 button {
   cursor: pointer;
 }
+.App {
+  min-height: 100vh;
+}
 .login,
 .signup-form {
   min-height: 100vh;
@@ -300,19 +303,23 @@ nav .brand img {
   height: 40px;
   margin: 0 2rem;
 }
+nav a {
+  text-decoration: none;
+  margin: 0 10px;
+}
+nav a.active {
+  text-decoration: underline;
+}
 nav p,
 nav h3,
 nav a,
 nav i {
   color: white;
 }
-nav a {
-  text-decoration: none;
-}
 nav h3 {
   font-size: 2.4rem;
 }
-nav button {
+nav .navbar-desktop-button {
   background: transparent;
   border: none;
   color: white;
@@ -382,7 +389,7 @@ nav button {
   box-shadow: inset 5px -5px 2px rgba(255, 255, 255, 0.5);
 }
 .bubls-area .bubl:nth-child(1n) {
-  background: #039be5;
+  background: #b8e986;
 }
 .bubls-area .bubl:nth-child(2n) {
   background: #66bb6a;
@@ -453,4 +460,17 @@ nav button {
   text-align: right;
   padding: 1rem 2rem;
   border-bottom: 1px solid grey;
+}
+.dropdown #dropdown-button {
+  color: black;
+}
+.explore .inline-input {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+.explore .inline-input input {
+  padding: 0.8rem;
+  border-radius: 5px;
+  border: 1px solid grey;
 }

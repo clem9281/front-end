@@ -24,6 +24,12 @@ import {
   ADD_POST_START,
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
+  JOINBUBL_START,
+  JOINBUBL_SUCCESS,
+  JOINBUBL_FAILURE,
+  LEAVEBUBL_START,
+  LEAVEBUBL_SUCCESS,
+  LEAVEBUBL_FAILURE,
   CLEAR_ERROR
 } from "../actions";
 
@@ -36,6 +42,7 @@ const initialState = {
   gettingUserInfo: false,
   gettingBublPosts: false,
   gettingSchoolBubls: false,
+  joiningBubl: false,
   schools: null,
   allSchoolBubls: null,
   bublPosts: null,
@@ -182,18 +189,57 @@ export const reducer = (state = initialState, action) => {
         allSchoolBubls: null,
         error: action.payload
       };
-    // case ADD_POST_START:
-    // return{
-    //   ...state
-    // };
-    // case ADD_POST_SUCCESS:
-    // return{
-    //   ...state
-    // };
-    // case ADD_POST_FAILURE:
-    // return{
-    //   ...state
-    // };
+    case ADD_POST_START:
+      return {
+        ...state,
+        gettingBublPosts: true,
+        addingPost: true,
+        error: null
+      };
+    case ADD_POST_SUCCESS:
+      return {
+        ...state,
+        bublPosts: [...state.bublPosts, action.payload],
+        addingPost: false
+      };
+    case ADD_POST_FAILURE:
+      return {
+        ...state,
+        addingPost: false,
+        error: action.err
+      };
+    case JOINBUBL_START:
+      return {
+        ...state,
+        joiningBubl: true
+      };
+    case JOINBUBL_SUCCESS:
+      return {
+        ...state,
+        joiningBubl: false
+      };
+    case JOINBUBL_FAILURE:
+      return {
+        ...state,
+        joiningBubl: false,
+        error: true
+      };
+    case LEAVEBUBL_START:
+      return {
+        ...state,
+        joiningBubl: true
+      };
+    case LEAVEBUBL_SUCCESS:
+      return {
+        ...state,
+        joiningBubl: false
+      };
+    case LEAVEBUBL_FAILURE:
+      return {
+        ...state,
+        joiningBubl: false,
+        error: true
+      };
     case CLEAR_ERROR:
       return {
         ...state,

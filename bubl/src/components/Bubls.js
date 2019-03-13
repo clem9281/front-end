@@ -35,7 +35,7 @@ class Bubls extends Component {
       this.setState({ result: [] });
     }
   };
-  handleClickInput = id => {
+  handleClickBubl = id => {
     this.props.getBublPosts(id).then(this.props.history.push(`bubls/${id}`));
   };
   handleJoin = (e, id) => {
@@ -63,7 +63,7 @@ class Bubls extends Component {
               <div
                 className="bubl"
                 key={bubl.id}
-                onClick={() => this.handleClickInput(bubl.id)}
+                onClick={() => this.handleClickBubl(bubl.id)}
               >
                 <div className="accent" />
                 {bubl.bubble}
@@ -89,12 +89,16 @@ class Bubls extends Component {
             )}
             {this.state.result.length > 0 &&
               this.state.result.map(bubl => (
-                <div key={bubl.id} className="bubl">
+                <div
+                  key={bubl.id}
+                  className="bubl"
+                  onClick={() => this.handleClickBubl(bubl.id)}
+                >
                   <div className="accent" />
                   <p>{bubl.bubble}</p>
-                  <button onClick={e => this.handleJoin(e, bubl.id)}>
+                  {/* <button onClick={e => this.handleJoin(e, bubl.id)}>
                     Join
-                  </button>
+                  </button> */}
                 </div>
               ))}
           </div>
