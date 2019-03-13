@@ -1,22 +1,30 @@
 nav {
-    background: @primary;
-    height: 70px;
-    .custom-flex(space-between, center);
-    .brand {
-      .custom-flex(center, center);
-      img {
-        width: 50px;
-      }
-    }
-    p,
-    h3,
-    a {
-        color: white;
-    }
-    a {
-        text-decoration: none;
-    }
-    h3 {
-        font-size: @large-text;
+  background: @primary;
+  height: 70px;
+  position: relative;
+  .custom-flex(space-between, center);
+  .brand {
+    .custom-flex(center, center);
+    img {
+      height: 40px;
+      margin: 0 2rem;
     }
   }
+  p,
+  h3,
+  a,
+  i {
+    color: white;
+  }
+  a {
+    text-decoration: none;
+  }
+  h3 {
+    font-size: @large-text;
+  }
+  button {
+    background: transparent;
+    border: none;
+    color: white;
+  }
+}

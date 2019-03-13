@@ -132,7 +132,7 @@ table {
 body,
 html {
   font-size: 62.5%;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 h1 {
   font-size: 3rem;
@@ -151,35 +151,108 @@ i {
 }
 .container {
   width: 90%;
-  max-width: 1000px;
+  max-width: 800px;
   margin: 0 auto;
 }
-.login {
+button {
+  cursor: pointer;
+}
+.login,
+.signup-form {
+  min-height: 100vh;
+  background-image: url("../assets/lockers.jpg");
+  background-size: cover;
+  color: white;
+}
+.login svg,
+.signup-form svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 50%;
+}
+.login .container,
+.signup-form .container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url('../assets/lockers.jpg');
 }
-.login input {
+.login .color-overlay,
+.signup-form .color-overlay {
+  background: rgba(92, 126, 120, 0.85);
+  padding: 3rem;
+  border-radius: 5px;
+}
+.login input,
+.signup-form input {
   display: block;
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 5px;
 }
-.login button {
+.login button,
+.signup-form button {
   display: block;
-  margin: 10px auto;
+  margin: 20px auto;
+  padding: 1rem 1.5rem;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 5px;
+  background-color: #66bb6a;
+  color: white;
 }
-.login .white-bubl {
+.login .white-bubl,
+.signup-form .white-bubl {
   width: 100px;
 }
-.login .logo {
+.login .logo,
+.signup-form .logo {
   display: flex;
-  height: 100px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 10%;
 }
-.login .logo h1 {
+.login .logo h1,
+.signup-form .logo h1 {
   font-size: 3.5rem;
+}
+.login .logo img,
+.signup-form .logo img {
+  width: 70%;
+  max-width: 300px;
+}
+.login p,
+.signup-form p {
+  text-align: center;
+}
+.login label,
+.signup-form label,
+.login a,
+.signup-form a {
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.login a,
+.signup-form a {
+  display: block;
+  text-align: center;
+  margin: 20px auto 0;
+}
+.login label,
+.signup-form label {
+  display: block;
+  margin: 20px 0 10px;
+}
+.login option,
+.signup-form option,
+.login select,
+.signup-form select {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
+  border-radius: 5px;
 }
 .profile {
   text-align: center;
@@ -188,6 +261,8 @@ i {
   font-size: 2.4rem;
 }
 .profile figure {
+  position: relative;
+  top: -150px;
   margin: 0 auto;
 }
 .profile figure .profile-pic {
@@ -196,11 +271,22 @@ i {
   height: 300px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 20px auto;
+  margin: 0 auto 20px;
+}
+.profile header {
+  height: 30vh;
+  background: url("https://images.unsplash.com/photo-1545360658-44c923941687?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80");
+  background-position: top center;
+  background-size: cover;
+}
+.profile .container {
+  position: relative;
+  top: -150px;
 }
 nav {
   background: #5c7e78ff;
   height: 70px;
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -211,11 +297,13 @@ nav .brand {
   align-items: center;
 }
 nav .brand img {
-  width: 50px;
+  height: 40px;
+  margin: 0 2rem;
 }
 nav p,
 nav h3,
-nav a {
+nav a,
+nav i {
   color: white;
 }
 nav a {
@@ -224,11 +312,18 @@ nav a {
 nav h3 {
   font-size: 2.4rem;
 }
+nav button {
+  background: transparent;
+  border: none;
+  color: white;
+}
 .post {
   text-align: left;
   margin: 20px auto;
   width: 90%;
   line-height: 1.25;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid grey;
 }
 @media (min-width: 800px) {
   .post {
@@ -264,14 +359,16 @@ nav h3 {
   padding: 10px 15px;
   border-radius: 20px;
 }
-.bubls {
+.bubls-area .bubls {
   display: flex;
-  justify-content: none;
+  justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  width: auto;
 }
-.bubls .bubl {
+.bubls-area .bubl {
   font-size: 2rem;
-  border: 1px solid black;
+  text-align: center;
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
@@ -281,19 +378,79 @@ nav h3 {
   flex-wrap: wrap;
   margin: 0 1rem;
   cursor: pointer;
+  position: relative;
+  box-shadow: inset 5px -5px 2px rgba(255, 255, 255, 0.5);
 }
-.bubls input {
+.bubls-area .bubl:nth-child(1n) {
+  background: #039be5;
+}
+.bubls-area .bubl:nth-child(2n) {
+  background: #66bb6a;
+}
+.bubls-area .bubl:nth-child(3n) {
+  background: #00acc1;
+}
+.bubls-area .bubl:nth-child(4n) {
+  background: #ef5350;
+}
+.bubls-area .bubl:nth-child(5n) {
+  background: #9575cd;
+}
+.bubls-area .bubl:nth-child(6n) {
+  background: #ffd54f;
+}
+.bubls-area .bubl .accent {
+  border-radius: 50%;
+  position: absolute;
+  top: 14%;
+  right: 18%;
+  height: 21%;
+  width: 21%;
+  background: rgba(255, 255, 255, 0.5);
+}
+.bubls-area .explore .bubl {
+  flex-direction: column;
+  width: 15rem;
+  height: 15rem;
+}
+.bubls-area .explore .bubl p {
+  margin: 10px 0;
+}
+.bubls-area .explore .bubl button {
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 1rem;
+  border-radius: 5px;
+}
+.bubls-area input {
   display: block;
+  margin: 10px auto;
 }
-.signup-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+.bubls-area ul {
+  margin: 10px 0;
 }
-.signup-form input {
+.bubls-area h2 {
+  text-align: center;
+  margin: 2rem 0;
+}
+.error {
+  margin: 2rem;
+  border: 1px solid #ef5350;
+  padding: 1rem;
+  border-radius: 5px;
+}
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 70px;
+  border-left: 1px solid grey;
+  z-index: 999;
+  background: white;
+}
+.dropdown a {
+  color: black;
   display: block;
-}
-.signup-form select {
-  display: block;
+  text-align: right;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid grey;
 }
