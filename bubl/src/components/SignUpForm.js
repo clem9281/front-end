@@ -38,15 +38,25 @@ class SignUpForm extends Component {
       .then(() => !this.props.error && this.props.history.push("/"));
   };
   handleChange = e => {
-    this.setState({
-      information: {
-        ...this.state.information,
-        [e.target.name]: e.target.value
-      }
-    });
+    if (e.target.name === "school_id") {
+      console.log("here");
+      this.setState({
+        information: {
+          ...this.state.information,
+          school_id: Number(e.target.value)
+        }
+      });
+    } else {
+      this.setState({
+        information: {
+          ...this.state.information,
+          [e.target.name]: e.target.value
+        }
+      });
+    }
+    console.log(typeof this.state.information.school_id);
   };
   render() {
-    console.log(this.props);
     return (
       <section className="signup-form">
         <div className="container">
@@ -79,7 +89,7 @@ class SignUpForm extends Component {
                 onChange={this.handleChange}
                 placeholder="Password"
               />
-              <label htmlFor="school">Your School</label>
+              <label htmlFor="school_id">Your School</label>
               {this.props.schoolsError && (
                 <p>Sorry, we can't find any schools right now.</p>
               )}
