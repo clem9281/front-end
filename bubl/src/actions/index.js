@@ -33,6 +33,15 @@ export const GETSCHOOLPOSTS_FAILURE = "GETSCHOOLPOSTS_FAILURE";
 export const ADD_POST_START = "ADD_POST_START";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
+export const ADD_COMMENT_START = "ADD_COMMENT_START";
+export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
+export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
+export const REMOVE_COMMENT_START = "REMOVE_COMMENT_START";
+export const REMOVE_COMMENT_SUCCESS = "REMOVE_COMMENT_SUCCESS";
+export const REMOVE_COMMENT_FAILURE = "REMOVE_COMMENT_FAILURE";
+export const REMOVE_POST_START = "REMOVE_POST_START";
+export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS";
+export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
 export const CLEAR_ERROR = "CLEAR_ERROR";
 export const LOG_OUT = "LOG_OUT";
 
@@ -161,6 +170,29 @@ export const joinBubl = id => dispatch => {
       })
     );
 };
+export const leaveBubl = id => dispatch => {
+  dispatch({ type: LEAVEBUBL_START });
+  return axios
+    .delete(
+      `https://build-week-bubl.herokuapp.com/api/bubbles/leave/${id}`,
+
+      {
+        headers: {
+          Authorization: localStorage.getItem("userToken")
+        }
+      }
+    )
+    .then(res => {
+      console.log(res);
+      dispatch({ type: LEAVEBUBL_SUCCESS, payload: res.data });
+    })
+    .catch(err =>
+      dispatch({
+        type: LEAVEBUBL_FAILURE,
+        payload: err.response.data.message
+      })
+    );
+};
 export const getSchoolPosts = () => dispatch => {
   dispatch({ type: GETSCHOOLPOSTS_START });
   return axios
@@ -186,20 +218,74 @@ export const clearError = () => dispatch => {
 
 export const addPost = newPost => dispatch => {
   dispatch({ type: ADD_POST_START });
-  axios
+  return axios
     .post(`https://build-week-bubl.herokuapp.com/api/posts`, newPost, {
       headers: { Authorization: localStorage.getItem("userToken") }
     })
     .then(res => {
       dispatch({ type: ADD_POST_SUCCESS, payload: res.data });
-      console.log(res.data);
     })
     .catch(err => {
-      dispatch({ type: ADD_POST_FAILURE });
-      console.log(err);
+      dispatch({ type: ADD_POST_FAILURE, payload: err.response.data.message });
     });
 };
+export const addComment = newComment => dispatch => {
+  dispatch({ type: ADD_COMMENT_START });
+  return axios
+    .post(`https://build-week-bubl.herokuapp.com/api/comments`, newComment, {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => {
+      console.log(res);
+      dispatch({ type: ADD_COMMENT_SUCCESS, payload: res.data });
+    })
+    .catch(err =>
+      dispatch({
+        type: ADD_COMMENT_FAILURE,
+        payload: err.response.data.message
+      })
+    );
+};
 
+export const removeComment = id => dispatch => {
+  dispatch({ type: REMOVE_COMMENT_START });
+  return axios
+    .delete(`https://build-week-bubl.herokuapp.com/api/comments/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => {
+      dispatch({ type: REMOVE_COMMENT_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      dispatch({
+        type: REMOVE_COMMENT_FAILURE,
+        payload: err.response.data.message
+      });
+    });
+};
+export const removePost = id => dispatch => {
+  dispatch({ type: REMOVE_POST_START });
+  return axios
+    .delete(`https://build-week-bubl.herokuapp.com/api/posts/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => {
+      console.log(res);
+      dispatch({ type: REMOVE_POST_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      dispatch({
+        type: REMOVE_POST_FAILURE,
+        payload: err.response.data.message
+      });
+    });
+};
 export const logOut = () => dispatch => {
   dispatch({ type: LOG_OUT });
   return localStorage.clear();
