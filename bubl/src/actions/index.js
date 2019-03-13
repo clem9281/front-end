@@ -21,6 +21,9 @@ export const GETSCHOOLBUBLS_FAILURE = "GETSCHOOLBUBLS_FAILURE";
 export const GETBUBLPOSTS_START = "GETBUBLPOSTS_START";
 export const GETBUBLPOSTS_SUCCESS = "GETBUBLPOSTS_SUCCESS";
 export const GETBUBLPOSTS_FAILURE = "GETBUBLPOSTS_FAILURE";
+export const JOINBUBL_START = "JOINBUBL_START";
+export const JOINBUBL_SUCCESS = "JOINBUBL_SUCCESS";
+export const JOINBUBL_FAILURE = "JOINBUBL_FAILURE";
 // export const ADD_POST_START = "ADD_POST_START";
 // export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 // export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
@@ -117,10 +120,32 @@ export const getSchoolBubls = () => dispatch => {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(res => dispatch({ type: GETSCHOOLBUBLS_SUCCESS, payload: res.data }))
+    .then(res => {
+      console.log(res);
+      dispatch({ type: GETSCHOOLBUBLS_SUCCESS, payload: res.data });
+    })
     .catch(err =>
       dispatch({
         type: GETSCHOOLBUBLS_FAILURE,
+        payload: err.response.data.message
+      })
+    );
+};
+export const joinBubl = id => dispatch => {
+  dispatch({ type: JOINBUBL_START });
+  return axios
+    .post(`https://build-week-bubl.herokuapp.com/api/bubbles/join/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    })
+    .then(res => {
+      console.log(res);
+      dispatch({ type: JOINBUBL_SUCCESS, payload: res.data });
+    })
+    .catch(err =>
+      dispatch({
+        type: JOINBUBL_FAILURE,
         payload: err.response.data.message
       })
     );

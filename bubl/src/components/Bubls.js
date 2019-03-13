@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import NavBar from "./NavBar";
-import { getUserInfo, getSchoolBubls, getBublPosts } from "../actions";
+import {
+  getUserInfo,
+  getSchoolBubls,
+  getBublPosts,
+  joinBubl
+} from "../actions";
 import { withRouter } from "react-router-dom";
 import FuzzySearch from "fuzzy-search";
+import Loader from "react-loader-spinner";
 class Bubls extends Component {
   constructor(props) {
     super(props);
@@ -24,8 +30,17 @@ class Bubls extends Component {
       }
     });
   };
-  handleClick = id => {
+  handleBlur = e => {
+    if (this.state.bublSearch.length === 0) {
+      this.setState({ result: [] });
+    }
+  };
+  handleClickInput = id => {
     this.props.getBublPosts(id).then(this.props.history.push(`bubls/${id}`));
+  };
+  handleJoin = (e, id) => {
+    e.preventDefault();
+    this.props.joinBubl(id);
   };
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -48,29 +63,41 @@ class Bubls extends Component {
               <div
                 className="bubl"
                 key={bubl.id}
-                onClick={() => this.handleClick(bubl.id)}
+                onClick={() => this.handleClickInput(bubl.id)}
               >
                 <div className="accent" />
                 {bubl.bubble}
               </div>
             ))}
           </div>
+          <h2>Explore</h2>
           <form>
             <input
               type="text"
               name="bublSearch"
               onFocus={this.handleFocus}
+              // onBlur={this.handleBlur}
               value={this.state.bublSearch}
               onChange={this.handleChange}
               placeholder="Find Bubls"
+              autoComplete="off"
             />
           </form>
-          <ul>
+          <div className="explore bubls">
+            {this.props.gettingSchoolBubls && (
+              <Loader type="ThreeDots" color="#66bb6a" />
+            )}
             {this.state.result.length > 0 &&
               this.state.result.map(bubl => (
-                <li key={bubl.id}>{bubl.bubble}</li>
+                <div key={bubl.id} className="bubl">
+                  <div className="accent" />
+                  <p>{bubl.bubble}</p>
+                  <button onClick={e => this.handleJoin(e, bubl.id)}>
+                    Join
+                  </button>
+                </div>
               ))}
-          </ul>
+          </div>
         </section>
       );
     }
@@ -80,12 +107,14 @@ class Bubls extends Component {
 const mapStateToProps = state => {
   return {
     userInfo: state.userInfo,
-    allSchoolBubls: state.allSchoolBubls
+    allSchoolBubls: state.allSchoolBubls,
+    gettingSchoolBubls: state.gettingSchoolBubls,
+    error: state.error
   };
 };
 export default withRouter(
   connect(
     mapStateToProps,
-    { getUserInfo, getSchoolBubls, getBublPosts }
+    { getUserInfo, getSchoolBubls, getBublPosts, joinBubl }
   )(Bubls)
 );

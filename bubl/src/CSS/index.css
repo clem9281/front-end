@@ -261,6 +261,8 @@ button {
   font-size: 2.4rem;
 }
 .profile figure {
+  position: relative;
+  top: -150px;
   margin: 0 auto;
 }
 .profile figure .profile-pic {
@@ -269,7 +271,17 @@ button {
   height: 300px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 20px auto;
+  margin: 0 auto 20px;
+}
+.profile header {
+  height: 30vh;
+  background: url("https://images.unsplash.com/photo-1545360658-44c923941687?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80");
+  background-position: top center;
+  background-size: cover;
+}
+.profile .container {
+  position: relative;
+  top: -150px;
 }
 nav {
   background: #5c7e78ff;
@@ -303,6 +315,8 @@ nav h3 {
   margin: 20px auto;
   width: 90%;
   line-height: 1.25;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid grey;
 }
 @media (min-width: 800px) {
   .post {
@@ -345,8 +359,9 @@ nav h3 {
   flex-wrap: wrap;
   width: auto;
 }
-.bubls-area .bubls .bubl {
+.bubls-area .bubl {
   font-size: 2rem;
+  text-align: center;
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
@@ -359,25 +374,25 @@ nav h3 {
   position: relative;
   box-shadow: inset 5px -5px 2px rgba(255, 255, 255, 0.5);
 }
-.bubls-area .bubls .bubl:nth-child(1n) {
+.bubls-area .bubl:nth-child(1n) {
   background: #039be5;
 }
-.bubls-area .bubls .bubl:nth-child(2n) {
+.bubls-area .bubl:nth-child(2n) {
   background: #66bb6a;
 }
-.bubls-area .bubls .bubl:nth-child(3n) {
+.bubls-area .bubl:nth-child(3n) {
   background: #00acc1;
 }
-.bubls-area .bubls .bubl:nth-child(4n) {
+.bubls-area .bubl:nth-child(4n) {
   background: #ef5350;
 }
-.bubls-area .bubls .bubl:nth-child(5n) {
+.bubls-area .bubl:nth-child(5n) {
   background: #9575cd;
 }
-.bubls-area .bubls .bubl:nth-child(6n) {
+.bubls-area .bubl:nth-child(6n) {
   background: #ffd54f;
 }
-.bubls-area .bubls .bubl .accent {
+.bubls-area .bubl .accent {
   border-radius: 50%;
   position: absolute;
   top: 14%;
@@ -386,12 +401,30 @@ nav h3 {
   width: 21%;
   background: rgba(255, 255, 255, 0.5);
 }
+.bubls-area .explore .bubl {
+  flex-direction: column;
+  width: 15rem;
+  height: 15rem;
+}
+.bubls-area .explore .bubl p {
+  margin: 10px 0;
+}
+.bubls-area .explore .bubl button {
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 1rem;
+  border-radius: 5px;
+}
 .bubls-area input {
   display: block;
   margin: 10px auto;
 }
 .bubls-area ul {
   margin: 10px 0;
+}
+.bubls-area h2 {
+  text-align: center;
+  margin: 2rem 0;
 }
 .error {
   margin: 2rem;
