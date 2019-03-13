@@ -286,6 +286,7 @@ button {
 nav {
   background: #5c7e78ff;
   height: 70px;
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -301,7 +302,8 @@ nav .brand img {
 }
 nav p,
 nav h3,
-nav a {
+nav a,
+nav i {
   color: white;
 }
 nav a {
@@ -309,6 +311,11 @@ nav a {
 }
 nav h3 {
   font-size: 2.4rem;
+}
+nav button {
+  background: transparent;
+  border: none;
+  color: white;
 }
 .post {
   text-align: left;
@@ -431,4 +438,19 @@ nav h3 {
   border: 1px solid #ef5350;
   padding: 1rem;
   border-radius: 5px;
+}
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 70px;
+  border-left: 1px solid grey;
+  z-index: 999;
+  background: white;
+}
+.dropdown a {
+  color: black;
+  display: block;
+  text-align: right;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid grey;
 }

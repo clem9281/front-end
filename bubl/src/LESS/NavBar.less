@@ -1,6 +1,7 @@
 nav {
   background: @primary;
   height: 70px;
+  position: relative;
   .custom-flex(space-between, center);
   .brand {
     .custom-flex(center, center);
@@ -11,7 +12,8 @@ nav {
   }
   p,
   h3,
-  a {
+  a,
+  i {
     color: white;
   }
   a {
@@ -19,5 +21,10 @@ nav {
   }
   h3 {
     font-size: @large-text;
+  }
+  button {
+    background: transparent;
+    border: none;
+    color: white;
   }
 }
