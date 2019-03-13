@@ -11,14 +11,6 @@ const Post = props => {
         {post_content}
         <span className="timestamp">{` ${moment(updated_at).fromNow()}`}</span>
       </p>
-      <div className="icons">
-        <i className="far fa-heart" />
-        <i className="far fa-comments" />
-        {/* <p className="comment">
-          <span className="comment-user">Person </span> Lorem ipsum dolor sit
-          amet!
-        </p> */}
-      </div>
     </div>
   );
 };
