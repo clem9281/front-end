@@ -9,7 +9,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         localStorage.getItem("userToken") ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/login" />
+          window.location.pathname !== props.match.url && (
+            <Redirect to="/login" />
+          )
         )
       }
     />

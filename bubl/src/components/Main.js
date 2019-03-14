@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import { connect } from "react-redux";
 
 // components
 import NavBar from "./NavBar";
@@ -7,21 +8,23 @@ import Bubls from "./Bubls";
 import PostList from "./PostList";
 import PrivateRoute from "./PrivateRoute";
 
-class Main extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  render() {
-    return (
-      <article>
-        <NavBar />
+// actions
+import { closeMenu } from "../actions";
+const Main = props => {
+  return (
+    <article>
+      <NavBar />
+      {/* close the menu when you click anywhere in main */}
+      <section className="main" onClick={props.closeMenu}>
         <PrivateRoute exact path="/" component={Profile} />
         <PrivateRoute exact path="/bubls" component={Bubls} />
         <PrivateRoute exact path="/bubls/:id" component={PostList} />
-      </article>
-    );
-  }
-}
+      </section>
+    </article>
+  );
+};
 
-export default Main;
+export default connect(
+  null,
+  { closeMenu }
+)(Main);

@@ -35,7 +35,6 @@ class Login extends Component {
     });
   };
   render() {
-    console.log(this.props);
     const { username, password } = this.state.credentials;
     // display the loader while logging in
     if (this.props.loggingIn) {

@@ -1,14 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getBublPosts } from "../actions";
+// actions
 import {
   addPost,
   getUserInfo,
   getSchoolBubls,
   joinBubl,
-  leaveBubl
+  leaveBubl,
+  getBublPosts
 } from "../actions";
+// reducer
 import Post from "./Post";
+import FullPageLoader from "./FullPageLoader";
 
 class PostList extends React.Component {
   state = {
@@ -96,23 +99,25 @@ class PostList extends React.Component {
           bubl => bubl.id === Number(this.props.match.params.id)
         ).length !== 0;
       return (
-        <div className="post-list">
+        <section className="post-list">
           {/* if the user is a member of this bubl, show the leave button, else show the join button */}
-          <button
-            onClick={
-              isMember
-                ? e => this.handleLeave(e, this.props.match.params.id)
-                : e => this.handleJoin(e, this.props.match.params.id)
-            }
-          >
-            {isMember ? "Leave" : "Join"}
-          </button>
+          <div className="title-container">
+            <button
+              onClick={
+                isMember
+                  ? e => this.handleLeave(e, this.props.match.params.id)
+                  : e => this.handleJoin(e, this.props.match.params.id)
+              }
+            >
+              {isMember ? "Leave" : "Join"}
+            </button>
 
-          <h2>{bubble}</h2>
+            <h2>{bubble}</h2>
+          </div>
           {this.props.bublPosts.map(post => (
             <Post post={post} key={post.id} />
           ))}
-          <form onSubmit={this.addPost}>
+          <form className="add-post" onSubmit={this.addPost}>
             {/* cannot add a comment longer than 256 characters */}
             <textarea
               className="post-input"
@@ -124,10 +129,10 @@ class PostList extends React.Component {
             />
             <button>add post</button>
           </form>
-        </div>
+        </section>
       );
     }
-    return <div />;
+    return <FullPageLoader />;
   }
 }
 

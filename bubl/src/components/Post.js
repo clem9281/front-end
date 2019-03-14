@@ -49,7 +49,7 @@ class Post extends Component {
       });
     }
   }
-  // handle form change
+  // handle comment form change
   handleChange = e => {
     e.preventDefault();
     this.setState({
@@ -109,16 +109,20 @@ class Post extends Component {
     }
   };
   render() {
-    console.log("POST STATE", this.state);
     const {
       post_content,
       updated_at,
+      created_at,
       comments,
       name,
       user_id,
       id,
       bubbles
     } = this.props.post;
+    // if there is an updated timestamp use that, otherwise use the created at timestamp
+    const postTimestamp = updated_at
+      ? moment(updated_at).fromNow()
+      : moment(created_at).fromNow();
     // if updating, show the form
     if (this.state.showForm) {
       return (
@@ -134,13 +138,14 @@ class Post extends Component {
     return (
       <div className="post">
         <p className="post-content">
-          <span className="name">{name} </span>
+          {/* post owner name: when post is created from postlist it comes with a name property, so use that. if post is created from the userposts it doesn't have a name property, so use the current user's name */}
+          <span className="name">{name ? name : this.props.userInfo.name}</span>
+
+          {/* post content */}
           {this.state.postContent}
 
           {/* moment library to create a 'how long ago' timestamp */}
-          <span className="timestamp">{` ${moment(
-            updated_at
-          ).fromNow()}`}</span>
+          <span className="timestamp">{postTimestamp}</span>
 
           {/* if the post belongs to the logged in user, display the delete and update post buttons */}
           {(this.state.user === name || this.state.userId === user_id) && (
@@ -151,7 +156,6 @@ class Post extends Component {
               >
                 <i className="fas fa-trash-alt" />
               </button>
-
               <button className="update-post" onClick={this.handleClickUpdate}>
                 <i className="fas fa-edit" />
               </button>
@@ -162,11 +166,17 @@ class Post extends Component {
         {comments &&
           comments.map(comment => (
             <p className="comment" key={comment.id}>
+              {/* commenter name */}
               <span className="comment-user">{comment.name}</span>
-              {` ${comment.comment}`}
-              <span className="timestamp">{` ${moment(
-                comment.created_at
-              ).fromNow()}`}</span>
+
+              {/* comment content */}
+              {comment.comment}
+
+              {/* timestamp from moment */}
+              <span className="timestamp">
+                {moment(comment.created_at).fromNow()}
+              </span>
+
               {/* if the comment belongs to the logged in user display the delete comment button */}
               {this.state.user === comment.name && (
                 <button
@@ -178,8 +188,9 @@ class Post extends Component {
               )}
             </p>
           ))}
+
         {/* add a comment form */}
-        <form onSubmit={this.handleSubmit}>
+        <form className="add-comment" onSubmit={this.handleSubmit}>
           <input
             type="text"
             name="comment"
