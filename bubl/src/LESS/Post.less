@@ -1,6 +1,6 @@
 .post {
   text-align: left;
-  margin: 20px auto;
+  margin: 5.5% auto;
   width: 90%;
   line-height: 1.25;
   padding-bottom: 1rem;
@@ -18,29 +18,71 @@
     font-weight: bold;
   }
   .post-content {
+    .name {
+      font-size: 1.9rem;
+      margin-right: 2%;
+      font-weight: bold;
+
+      @media @desktop {
+        margin-right: 0.5%;
+      }
+    }
   }
   .timestamp {
     color: grey;
     white-space: nowrap;
+    margin-left: 1%;
+
+    @media @desktop {
+      margin-left: 0.5%;
+    }
   }
+
   i {
     font-size: 2rem;
     margin-right: 1.6rem;
   }
   .comment-user {
     font-weight: 600;
+    font-size: 1.9rem;
   }
   .comment {
     width: 95%;
     margin: 2rem auto;
+    font-size: 1.5rem;
   }
-
-  .fa-trash-alt {
+  .delete-post,
+  .update-post {
+    background: transparent;
+    padding: 0;
+    border: none;
+  }
+  i {
     margin-left: 10px;
 
     &:hover {
       cursor: pointer;
-      color: #b8e986;
+      color: @bubl1;
+    }
+  }
+  .add-comment {
+    display: flex;
+    justify-content: center;
+    margin-top: 4%;
+    margin-bottom: 2%;
+
+    input {
+      margin-right: 0.5%;
+      width: 35%;
+      border-radius: 5px;
+    }
+
+    button {
+      border-radius: 5px;
+
+      &:hover {
+        color: @bubl2;
+      }
     }
   }
 }

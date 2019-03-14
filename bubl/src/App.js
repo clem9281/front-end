@@ -1,29 +1,42 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+// components
 import Login from "./components/Login";
-import Profile from "./components/Profile";
-import Bubls from "./components/Bubls";
-import PostList from "./components/PostList";
 import PrivateRoute from "./components/PrivateRoute";
 import SignUpForm from "./components/SignUpForm";
 import Main from "./components/Main";
-
+import FullPageLoader from "./components/FullPageLoader";
 class App extends Component {
+  componentDidMount() {
+    console.log("app");
+  }
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps, prevState);
+  }
   render() {
+    if (this.props.loggingOut) {
+      return <FullPageLoader />;
+    }
     return (
       <Router>
+        {/* <Switch> */}
         <div className="App">
-          <Route path="/login" render={props => <Login {...props} />} />
-          <Route path="/signup" render={props => <SignUpForm {...props} />} />
+          <Route path="/login" exact render={props => <Login {...props} />} />
+          <Route
+            path="/signup"
+            exact
+            render={props => <SignUpForm {...props} />}
+          />
           <PrivateRoute path="/" component={Main} />
-          {/* <PrivateRoute path="/" exact component={Profile} />
-          <PrivateRoute exact path="/post-list" component={PostList} />
-          <PrivateRoute exact path="/bubls" component={Bubls} /> */}
         </div>
+        {/* </Switch> */}
       </Router>
     );
   }
 }
-
-export default App;
+const mapStateToProps = ({ loggingOut }) => ({ loggingOut });
+export default connect(
+  mapStateToProps,
+  {}
+)(App);

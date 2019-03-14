@@ -1,3 +1,50 @@
-.pinput {
-  padding: 20px;
+// .pinput {
+//   padding: 20px;
+// }
+.post-list {
+  .title-container {
+    margin-top: 5%;
+    text-align: center;
+
+    @media @desktop {
+      margin-top: 1%;
+    }
+
+    button {
+      padding: 0.2% 1.5%;
+      border-radius: 15px;
+    }
+
+    h2 {
+      margin-top: 5%;
+
+      @media @desktop {
+        margin-top: 2.5%;
+      }
+    }
+  }
+  .add-post {
+    display: flex;
+    flex-direction: column;
+    margin: 0 5%;
+
+    @media @desktop {
+      margin: 0 35%;
+    }
+
+    .post-input {
+      padding: 5% 2%;
+      border-radius: 8px;
+    }
+
+    button {
+      margin: 2% auto;
+      padding: 1.5% 8%;
+      border-radius: 15px;
+
+      &:hover {
+        color: @bubl2;
+      }
+    }
+  }
 }

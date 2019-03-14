@@ -1,21 +1,23 @@
 import React, { Component } from "react";
-import { NavLink, Link, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import PrivateRoute from "./PrivateRoute";
-import NavBar from "./NavBar";
+// components
 import UserPosts from "./UserPosts";
-import PostList from "./PostList";
 import InterestList from "./InterestList";
-import Bubls from "./Bubls";
+import FullPageLoader from "./FullPageLoader";
+import MainError from "./MainError";
+// actions
 import { getUserInfo } from "../actions";
 
 class Profile extends Component {
   componentDidMount() {
-    console.log("profile mount", this.props);
     this.props.getUserInfo();
   }
   render() {
-    console.log("profile render", this.props);
+    if (this.props.error) {
+      return (
+        <MainError text="Sorry, we couldn't find your profile information." />
+      );
+    }
     if (this.props.userInfo) {
       const { bio, bubbles, id, name, picture, username } = this.props.userInfo;
       return (
@@ -24,29 +26,28 @@ class Profile extends Component {
           <figure>
             <img
               src="https://images.unsplash.com/photo-1469899324414-c72bfb4d4161?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
-              alt="user profile picture"
+              alt="user"
               className="profile-pic"
             />
           </figure>
           <div className="container">
             <h2>{name}</h2>
-            <p>{bio}</p>
-            <InterestList />
+            <p className="bio">{bio}</p>
+            <InterestList bubbles={bubbles} />
             <h3>My Recent Posts</h3>
             <UserPosts />
           </div>
         </section>
       );
     }
-    return <div> </div>;
+    // loading user info
+    return <FullPageLoader />;
   }
 }
 
-const mapStateToProps = ({ userInfo }) => ({ userInfo });
+const mapStateToProps = ({ userInfo, error }) => ({ userInfo, error });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    { getUserInfo }
-  )(Profile)
-);
+export default connect(
+  mapStateToProps,
+  { getUserInfo }
+)(Profile);

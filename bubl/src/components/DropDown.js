@@ -1,7 +1,8 @@
 import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { logOut } from "../actions";
+// actions
+import { logOut, closeMenu } from "../actions";
 
 const DropDown = props => {
   const logOut = () => {
@@ -9,15 +10,12 @@ const DropDown = props => {
     props.history.push("/");
   };
   return (
-    <div className="dropdown">
+    <div className="dropdown" onClick={props.closeMenu}>
       <NavLink exact to="/bubls">
         My Bubls
       </NavLink>
       <NavLink exact to="/">
         Profile
-      </NavLink>
-      <NavLink exact to="/explore">
-        Explore Interests
       </NavLink>
       <button id="dropdown-button" onClick={logOut}>
         Log Out
@@ -29,6 +27,6 @@ const DropDown = props => {
 export default withRouter(
   connect(
     null,
-    { logOut }
+    { logOut, closeMenu }
   )(DropDown)
 );

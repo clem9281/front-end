@@ -1,76 +1,99 @@
 import {
+  //TOGGLE MENU
+  TOGGLE_MENU,
+  CLOSE_MENU,
+
   // LOGIN
   LOGIN_START,
   LOG_OUT,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+
   // GET SCHOOLS
   GETSCHOOLS_START,
   GETSCHOOLS_SUCCESS,
   GETSCHOOLS_FAILURE,
+
   // GET USER POSTS
   GETPOSTS_FAILURE,
-  GETPOSTS_START,
   GETPOSTS_SUCCESS,
+
   // SIGN UP
   SIGNUP_START,
   SIGNUP_FAILURE,
   SIGNUP_SUCCESS,
+
   // GET USER INFO
-  GETUSERINFO_START,
   GETUSERINFO_SUCCESS,
   GETUSERINFO_FAILURE,
+
   // GET POSTS FOR BUBL
-  GETBUBLPOSTS_START,
   GETBUBLPOSTS_SUCCESS,
   GETBUBLPOSTS_FAILURE,
+
   // GET SCHOOL BUBLS
   GETSCHOOLBUBLS_START,
   GETSCHOOLBUBLS_SUCCESS,
   GETSCHOOLBUBLS_FAILURE,
+
   // ADD POST
   ADD_POST_START,
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
+
   // JOIN BUBL
   JOINBUBL_START,
   JOINBUBL_SUCCESS,
   JOINBUBL_FAILURE,
+
   // LEAVE BUBL
   LEAVEBUBL_START,
   LEAVEBUBL_SUCCESS,
   LEAVEBUBL_FAILURE,
+
   // ADD COMMENT
   ADD_COMMENT_START,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILURE,
+
   // REMOVE COMMENT
   REMOVE_COMMENT_START,
   REMOVE_COMMENT_SUCCESS,
   REMOVE_COMMENT_FAILURE,
+
+  // UPDATE COMMENT
+  UPDATE_POST_START,
+  UPDATE_POST_SUCCESS,
+  UPDATE_POST_FAILURE,
+
+  // CLEAR UPDATED POST
+  CLEAR_UPDATED_POST,
+
   // CLEAR ERROR
   CLEAR_ERROR
 } from "../actions";
 
 const initialState = {
+  // loading checkers
+  isLoading: false,
   loggingIn: false,
   loggingOut: false,
   gettingSchools: false,
   signingUp: false,
-  gettingPosts: false,
-  gettingUserInfo: false,
-  gettingBublPosts: false,
   gettingSchoolBubls: false,
-  joiningBubl: false,
   addingPost: false,
-  addingComment: false,
-  removingComment: false,
+  commentLoading: false,
+  updatingPost: false,
+  // view
+  signupSuccess: false,
+  menuOpen: false,
+  // data
   schools: null,
   allSchoolBubls: null,
   bublPosts: null,
-  token: null,
   schoolsError: null,
   error: null,
+  addPostError: null,
   userPosts: null,
   userInfo: null
 };
@@ -78,6 +101,17 @@ const initialState = {
 export const reducer = (state = initialState, action) => {
   console.log("reducer", action);
   switch (action.type) {
+    case TOGGLE_MENU:
+      return {
+        ...state,
+        menuOpen: !state.menuOpen
+      };
+    case CLOSE_MENU:
+      return {
+        ...state,
+        menuOpen: false
+      };
+
     // LOGIN
     case LOGIN_START:
       return {
@@ -88,16 +122,17 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         loggingIn: false,
-        token: action.payload,
-        error: null
+        error: null,
+        signupSuccess: false
       };
     case LOGIN_FAILURE:
       return {
         ...state,
         loggingIn: false,
-        token: null,
-        error: action.payload
+        error: action.payload,
+        signupSuccess: false
       };
+
     // GET SCHOOLS
     case GETSCHOOLS_START:
       return {
@@ -118,6 +153,7 @@ export const reducer = (state = initialState, action) => {
         schoolError: true,
         schools: null
       };
+
     // SIGN UP
     case SIGNUP_START:
       return {
@@ -128,24 +164,21 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         signingUp: false,
-        error: null
+        error: null,
+        signupSuccess: true
       };
     case SIGNUP_FAILURE:
       return {
         ...state,
         signingUp: false,
-        error: action.payload
+        error: action.payload,
+        signupSuccess: false
       };
+
     // GET USER POSTS
-    case GETPOSTS_START:
-      return {
-        ...state,
-        gettingPosts: true
-      };
     case GETPOSTS_SUCCESS:
       return {
         ...state,
-        gettingPosts: false,
         userPosts: action.payload,
         error: null
       };
@@ -153,49 +186,37 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         userPosts: null,
-        gettingPosts: false,
         error: action.payload
       };
+
     // GET USER INFO
-    case GETUSERINFO_START:
-      return {
-        ...state,
-        gettingUserInfo: true
-      };
     case GETUSERINFO_SUCCESS:
       return {
         ...state,
-        gettingUserInfo: false,
         error: null,
         userInfo: action.payload
       };
     case GETUSERINFO_FAILURE:
       return {
         ...state,
-        gettingUserInfo: false,
         user: null,
-        error: action.payload
+        error: true
       };
+
     // GET POSTS FOR BUBL
-    case GETBUBLPOSTS_START:
-      return {
-        ...state,
-        gettingBublPosts: true
-      };
     case GETBUBLPOSTS_SUCCESS:
       return {
         ...state,
-        gettingBublPosts: false,
         error: null,
         bublPosts: action.payload
       };
     case GETBUBLPOSTS_FAILURE:
       return {
         ...state,
-        gettingBublPosts: false,
-        error: action.payload,
+        error: true,
         bublPosts: null
       };
+
     // GET BUBLS FOR SCHOOL
     case GETSCHOOLBUBLS_START:
       return {
@@ -214,106 +235,140 @@ export const reducer = (state = initialState, action) => {
         ...state,
         gettingSchoolBubls: false,
         allSchoolBubls: null,
-        error: action.payload
+        error: true
       };
+
     // ADD POST
     case ADD_POST_START:
       return {
         ...state,
-        gettingBublPosts: true,
-        addingPost: true,
-        error: null
+        addingPost: true
       };
     case ADD_POST_SUCCESS:
       return {
         ...state,
         bublPosts: [...state.bublPosts, action.payload],
-        addingPost: false
+        addingPost: false,
+        addPostError: null
       };
     case ADD_POST_FAILURE:
       return {
         ...state,
         addingPost: false,
-        error: action.err
+        addPostError: true
       };
+
+    // UPDATE POST
+    case UPDATE_POST_START:
+      return {
+        ...state,
+        updatingPost: true
+      };
+    case UPDATE_POST_SUCCESS:
+      return {
+        ...state,
+        updatingPost: false,
+        updatedPost: action.payload,
+        error: null
+      };
+    case UPDATE_POST_FAILURE:
+      return {
+        ...state,
+        updatingPost: false,
+        error: action.payload
+      };
+
     // JOIN BUBL
     case JOINBUBL_START:
       return {
         ...state,
-        joiningBubl: true
+        isLoading: true
       };
     case JOINBUBL_SUCCESS:
       return {
         ...state,
-        joiningBubl: false
+        isLoading: false,
+        error: null
       };
     case JOINBUBL_FAILURE:
       return {
         ...state,
-        joiningBubl: false,
+        isLoading: false,
         error: true
       };
+
     // LEAVE BUBL
     case LEAVEBUBL_START:
       return {
         ...state,
-        joiningBubl: true
+        isLoading: true
       };
     case LEAVEBUBL_SUCCESS:
       return {
         ...state,
-        joiningBubl: false
+        isLoading: false
       };
     case LEAVEBUBL_FAILURE:
       return {
         ...state,
-        joiningBubl: false,
+        isLoading: false,
         error: true
       };
+
     // ADD COMMENT
     case ADD_COMMENT_START:
       return {
         ...state,
-        addComment: true,
+        commentLoading: true,
         error: null
       };
     case ADD_COMMENT_SUCCESS:
       return {
         ...state,
-        addingComment: false,
+        commentLoading: false,
         error: null
       };
     case ADD_COMMENT_FAILURE:
       return {
         ...state,
-        addingComment: false,
+        commentLoading: false,
         error: true
       };
+
     // DELETE COMMENT
     case REMOVE_COMMENT_START:
       return {
         ...state,
-        removingComment: true,
+        commentLoading: true,
         error: null
       };
     case REMOVE_COMMENT_SUCCESS:
       return {
         ...state,
-        removingComment: false,
+        commentLoading: false,
         error: null
       };
     case REMOVE_COMMENT_FAILURE:
       return {
         ...state,
-        removingComment: false,
+        commentLoading: false,
         error: true
       };
+
+    // CLEAR THE UPDATED POST
+    case CLEAR_UPDATED_POST:
+      return {
+        ...state,
+        updatedPost: null
+      };
+
     // CLEAR ERROR
     case CLEAR_ERROR:
       return {
         ...state,
         error: null
       };
+
     // LOG OUT
     case LOG_OUT:
       return {

@@ -1,11 +1,12 @@
 import React from "react";
-const InterestList = props => {
+const InterestList = ({ bubbles }) => {
+  // if the user has a ton of bubbles just get the top 4 to render on their profile
+  const topBubbles = bubbles.length >= 5 ? bubbles.slice(0, 4) : bubbles;
   return (
     <ul className="interests">
-      <li>Memes</li>
-      <li>Football</li>
-      <li>Video Games</li>
-      <li>Music</li>
+      {topBubbles.map(bubble => (
+        <li key={bubble.id}>{bubble.bubble}</li>
+      ))}
     </ul>
   );
 };
