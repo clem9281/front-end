@@ -1,16 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// components
-import Post from "./Post";
 // actions
 import { getPostsStart } from "../actions";
-
+// components
+import Post from "./Post";
+import BlockLoader from "./BlockLoader";
+import BlockError from "./BlockError";
 class UserPosts extends Component {
   componentDidMount() {
-    this.props.getPostsStart();
+    if (!this.props.userPosts && !this.props.error) {
+      this.props.getPostsStart();
+    }
   }
   render() {
-    console.log(this.props);
+    if (this.props.error) {
+      return <BlockError text="Sorry, we can't find your posts." />;
+    }
     if (this.props.userPosts) {
       return (
         <section className="posts">
@@ -20,13 +25,14 @@ class UserPosts extends Component {
         </section>
       );
     }
-    return <div />;
+    return <BlockLoader />;
   }
 }
 
-const mapStateToProps = ({ userPosts }) => {
+const mapStateToProps = ({ userPosts, error }) => {
   return {
-    userPosts
+    userPosts,
+    error
   };
 };
 

@@ -1,7 +1,8 @@
 import React from "react";
 import { Route, Redirect, withRouter } from "react-router-dom";
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component, match, history, ...rest }) => {
+  console.log(match.url);
   return (
     <Route
       {...rest}

@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 // actions
-import { logOut } from "../actions";
+import { logOut, closeMenu } from "../actions";
 
 const DropDown = props => {
   const logOut = () => {
@@ -10,7 +10,7 @@ const DropDown = props => {
     props.history.push("/");
   };
   return (
-    <div className="dropdown">
+    <div className="dropdown" onClick={props.closeMenu}>
       <NavLink exact to="/bubls">
         My Bubls
       </NavLink>
@@ -27,6 +27,6 @@ const DropDown = props => {
 export default withRouter(
   connect(
     null,
-    { logOut }
+    { logOut, closeMenu }
   )(DropDown)
 );

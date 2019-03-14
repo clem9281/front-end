@@ -33,13 +33,16 @@ class Bubls extends Component {
     }
   }
   // get the school bubls when you click the search bar
-  handleFocus = () => {
+  handleFocus = e => {
+    // if the school bubls don't exist on the store get them and set them to the local state, if they do and the input bar is empty set them to the local state
     if (!this.props.allSchoolBubls) {
       this.props.getSchoolBubls().then(() => {
         if (this.props.allSchoolBubls && this.state.bublSearch.length === 0) {
           this.setState({ result: this.props.allSchoolBubls });
         }
       });
+    } else if (this.props.allSchoolBubls && e.target.value.length === 0) {
+      this.setState({ result: this.props.allSchoolBubls });
     }
   };
   // when you click a bubl, go to that bubl's post page
@@ -87,7 +90,7 @@ class Bubls extends Component {
               autoComplete="off"
             />
           </form>
-          <div className="explore bubls">
+          <div className="explore">
             {/* if the school bubls exist show them here */}
             {this.props.gettingSchoolBubls && (
               <Loader type="ThreeDots" color="#66bb6a" />
@@ -96,17 +99,26 @@ class Bubls extends Component {
               <BlockError text="Sorry, we couldn't find any Bubls for your school." />
             )}
             {/* check the local state for the result we set, as long as there is one show it */}
-            {this.state.result.length > 0 &&
-              this.state.result.map(bubl => (
-                <div
-                  key={bubl.id}
-                  className="bubl"
-                  onClick={() => this.handleClickBubl(bubl.id)}
+            {this.state.result.length > 0 && (
+              <div className="show-explore bubls">
+                <button
+                  className="hide-explore"
+                  onClick={() => this.setState({ result: [] })}
                 >
-                  <div className="accent" />
-                  <p>{bubl.bubble}</p>
-                </div>
-              ))}
+                  <i className="fas fa-times" />
+                </button>
+                {this.state.result.map(bubl => (
+                  <div
+                    key={bubl.id}
+                    className="bubl"
+                    onClick={() => this.handleClickBubl(bubl.id)}
+                  >
+                    <div className="accent" />
+                    <p>{bubl.bubble}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       );

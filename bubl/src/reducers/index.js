@@ -16,7 +16,6 @@ import {
 
   // GET USER POSTS
   GETPOSTS_FAILURE,
-  GETPOSTS_START,
   GETPOSTS_SUCCESS,
 
   // SIGN UP
@@ -25,12 +24,10 @@ import {
   SIGNUP_SUCCESS,
 
   // GET USER INFO
-  GETUSERINFO_START,
   GETUSERINFO_SUCCESS,
   GETUSERINFO_FAILURE,
 
   // GET POSTS FOR BUBL
-  GETBUBLPOSTS_START,
   GETBUBLPOSTS_SUCCESS,
   GETBUBLPOSTS_FAILURE,
 
@@ -78,28 +75,25 @@ import {
 
 const initialState = {
   // loading checkers
-  menuOpen: false,
+  isLoading: false,
   loggingIn: false,
   loggingOut: false,
   gettingSchools: false,
   signingUp: false,
-  gettingPosts: false,
-  gettingUserInfo: false,
-  gettingBublPosts: false,
   gettingSchoolBubls: false,
-  joiningBubl: false,
   addingPost: false,
-  addingComment: false,
-  removingComment: false,
+  commentLoading: false,
   updatingPost: false,
+  // view
   signupSuccess: false,
-  // data items
+  menuOpen: false,
+  // data
   schools: null,
   allSchoolBubls: null,
   bublPosts: null,
-  token: null,
   schoolsError: null,
   error: null,
+  addPostError: null,
   userPosts: null,
   userInfo: null
 };
@@ -117,6 +111,7 @@ export const reducer = (state = initialState, action) => {
         ...state,
         menuOpen: false
       };
+
     // LOGIN
     case LOGIN_START:
       return {
@@ -127,7 +122,6 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         loggingIn: false,
-        token: action.payload,
         error: null,
         signupSuccess: false
       };
@@ -135,10 +129,10 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         loggingIn: false,
-        token: null,
         error: action.payload,
         signupSuccess: false
       };
+
     // GET SCHOOLS
     case GETSCHOOLS_START:
       return {
@@ -159,6 +153,7 @@ export const reducer = (state = initialState, action) => {
         schoolError: true,
         schools: null
       };
+
     // SIGN UP
     case SIGNUP_START:
       return {
@@ -179,16 +174,11 @@ export const reducer = (state = initialState, action) => {
         error: action.payload,
         signupSuccess: false
       };
+
     // GET USER POSTS
-    case GETPOSTS_START:
-      return {
-        ...state,
-        gettingPosts: true
-      };
     case GETPOSTS_SUCCESS:
       return {
         ...state,
-        gettingPosts: false,
         userPosts: action.payload,
         error: null
       };
@@ -196,49 +186,37 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         userPosts: null,
-        gettingPosts: false,
         error: action.payload
       };
+
     // GET USER INFO
-    case GETUSERINFO_START:
-      return {
-        ...state,
-        gettingUserInfo: true
-      };
     case GETUSERINFO_SUCCESS:
       return {
         ...state,
-        gettingUserInfo: false,
         error: null,
         userInfo: action.payload
       };
     case GETUSERINFO_FAILURE:
       return {
         ...state,
-        gettingUserInfo: false,
         user: null,
         error: true
       };
+
     // GET POSTS FOR BUBL
-    case GETBUBLPOSTS_START:
-      return {
-        ...state,
-        gettingBublPosts: true
-      };
     case GETBUBLPOSTS_SUCCESS:
       return {
         ...state,
-        gettingBublPosts: false,
         error: null,
         bublPosts: action.payload
       };
     case GETBUBLPOSTS_FAILURE:
       return {
         ...state,
-        gettingBublPosts: false,
-        error: action.payload,
+        error: true,
         bublPosts: null
       };
+
     // GET BUBLS FOR SCHOOL
     case GETSCHOOLBUBLS_START:
       return {
@@ -259,11 +237,11 @@ export const reducer = (state = initialState, action) => {
         allSchoolBubls: null,
         error: true
       };
+
     // ADD POST
     case ADD_POST_START:
       return {
         ...state,
-        gettingBublPosts: true,
         addingPost: true
       };
     case ADD_POST_SUCCESS:
@@ -271,14 +249,15 @@ export const reducer = (state = initialState, action) => {
         ...state,
         bublPosts: [...state.bublPosts, action.payload],
         addingPost: false,
-        error: null
+        addPostError: null
       };
     case ADD_POST_FAILURE:
       return {
         ...state,
         addingPost: false,
-        error: action.payload
+        addPostError: true
       };
+
     // UPDATE POST
     case UPDATE_POST_START:
       return {
@@ -298,91 +277,98 @@ export const reducer = (state = initialState, action) => {
         updatingPost: false,
         error: action.payload
       };
+
     // JOIN BUBL
     case JOINBUBL_START:
       return {
         ...state,
-        joiningBubl: true
+        isLoading: true
       };
     case JOINBUBL_SUCCESS:
       return {
         ...state,
-        joiningBubl: false,
+        isLoading: false,
         error: null
       };
     case JOINBUBL_FAILURE:
       return {
         ...state,
-        joiningBubl: false,
-        error: action.payload
+        isLoading: false,
+        error: true
       };
+
     // LEAVE BUBL
     case LEAVEBUBL_START:
       return {
         ...state,
-        joiningBubl: true
+        isLoading: true
       };
     case LEAVEBUBL_SUCCESS:
       return {
         ...state,
-        joiningBubl: false
+        isLoading: false
       };
     case LEAVEBUBL_FAILURE:
       return {
         ...state,
-        joiningBubl: false,
-        error: action.payload
+        isLoading: false,
+        error: true
       };
+
     // ADD COMMENT
     case ADD_COMMENT_START:
       return {
         ...state,
-        addComment: true,
+        commentLoading: true,
         error: null
       };
     case ADD_COMMENT_SUCCESS:
       return {
         ...state,
-        addingComment: false,
+        commentLoading: false,
         error: null
       };
     case ADD_COMMENT_FAILURE:
       return {
         ...state,
-        addingComment: false,
+        commentLoading: false,
         error: true
       };
+
     // DELETE COMMENT
     case REMOVE_COMMENT_START:
       return {
         ...state,
-        removingComment: true,
+        commentLoading: true,
         error: null
       };
     case REMOVE_COMMENT_SUCCESS:
       return {
         ...state,
-        removingComment: false,
+        commentLoading: false,
         error: null
       };
     case REMOVE_COMMENT_FAILURE:
       return {
         ...state,
-        removingComment: false,
+        commentLoading: false,
         error: true
       };
+
     // CLEAR THE UPDATED POST
     case CLEAR_UPDATED_POST:
       return {
         ...state,
         updatedPost: null
       };
+
     // CLEAR ERROR
     case CLEAR_ERROR:
       return {
         ...state,
         error: null
       };
+
     // LOG OUT
     case LOG_OUT:
       return {

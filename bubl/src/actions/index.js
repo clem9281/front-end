@@ -39,10 +39,7 @@ export const getSchoolsStart = info => dispatch => {
   return axios
     .get("https://build-week-bubl.herokuapp.com/api/schools", info)
     .then(res => dispatch({ type: GETSCHOOLS_SUCCESS, payload: res.data }))
-    .catch(err => {
-      console.error(err);
-      dispatch({ type: GETSCHOOLS_FAILURE });
-    });
+    .catch(err => dispatch({ type: GETSCHOOLS_FAILURE }));
 };
 
 // SIGN UP
@@ -55,19 +52,16 @@ export const signUpStart = info => dispatch => {
   return axios
     .post("https://build-week-bubl.herokuapp.com/auth/register", info)
     .then(res => dispatch({ type: SIGNUP_SUCCESS }))
-    .catch(err => {
-      console.log(err.response);
-      dispatch({ type: SIGNUP_FAILURE, payload: err.response.data.message });
-    });
+    .catch(err =>
+      dispatch({ type: SIGNUP_FAILURE, payload: err.response.data.message })
+    );
 };
 
 // GET USER POSTS
-export const GETPOSTS_START = "GETPOSTS_START";
 export const GETPOSTS_SUCCESS = "GETPOSTS_SUCCESS";
 export const GETPOSTS_FAILURE = "GETPOSTS_FAILURE";
 
 export const getPostsStart = () => dispatch => {
-  dispatch({ type: GETPOSTS_START });
   return axios
     .get("https://build-week-bubl.herokuapp.com/api/posts", {
       headers: {
@@ -75,18 +69,14 @@ export const getPostsStart = () => dispatch => {
       }
     })
     .then(res => dispatch({ type: GETPOSTS_SUCCESS, payload: res.data }))
-    .catch(err =>
-      dispatch({ type: GETPOSTS_FAILURE, payload: err.response.data.message })
-    );
+    .catch(() => dispatch({ type: GETPOSTS_FAILURE }));
 };
 
 // GET USER INFO
-export const GETUSERINFO_START = "GETUSERINFO_START";
 export const GETUSERINFO_SUCCESS = "GETUSERINFO_SUCCESS";
 export const GETUSERINFO_FAILURE = "GETUSERINFO_FAILURE";
 
 export const getUserInfo = () => dispatch => {
-  dispatch({ type: GETUSERINFO_START });
   return axios
     .get("https://build-week-bubl.herokuapp.com/api/users/me", {
       headers: {
@@ -94,34 +84,28 @@ export const getUserInfo = () => dispatch => {
       }
     })
     .then(res => dispatch({ type: GETUSERINFO_SUCCESS, payload: res.data }))
-    .catch(err => {
+    .catch(() =>
       dispatch({
         type: GETUSERINFO_FAILURE
-      });
-    });
+      })
+    );
 };
 
 // GET POSTS FOR BUBL
-export const GETBUBLPOSTS_START = "GETBUBLPOSTS_START";
 export const GETBUBLPOSTS_SUCCESS = "GETBUBLPOSTS_SUCCESS";
 export const GETBUBLPOSTS_FAILURE = "GETBUBLPOSTS_FAILURE";
 
 export const getBublPosts = id => dispatch => {
-  dispatch({ type: GETBUBLPOSTS_START });
   return axios
     .get(`https://build-week-bubl.herokuapp.com/api/posts/filter/${id}`, {
       headers: {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(res => {
-      console.log("BUBL POST RESPONSE", res);
-      dispatch({ type: GETBUBLPOSTS_SUCCESS, payload: res.data });
-    })
-    .catch(err =>
+    .then(res => dispatch({ type: GETBUBLPOSTS_SUCCESS, payload: res.data }))
+    .catch(() =>
       dispatch({
-        type: GETBUBLPOSTS_FAILURE,
-        payload: err.response.data.message
+        type: GETBUBLPOSTS_FAILURE
       })
     );
 };
@@ -140,10 +124,9 @@ export const getSchoolBubls = () => dispatch => {
       }
     })
     .then(res => {
-      console.log(res);
       dispatch({ type: GETSCHOOLBUBLS_SUCCESS, payload: res.data });
     })
-    .catch(err =>
+    .catch(() =>
       dispatch({
         type: GETSCHOOLBUBLS_FAILURE
       })
@@ -167,10 +150,7 @@ export const joinBubl = id => dispatch => {
         }
       }
     )
-    .then(res => {
-      console.log(res);
-      dispatch({ type: JOINBUBL_SUCCESS, payload: res.data });
-    })
+    .then(res => dispatch({ type: JOINBUBL_SUCCESS, payload: res.data }))
     .catch(err =>
       dispatch({
         type: JOINBUBL_FAILURE,
@@ -196,39 +176,10 @@ export const leaveBubl = id => dispatch => {
         }
       }
     )
-    .then(res => {
-      console.log(res);
-      dispatch({ type: LEAVEBUBL_SUCCESS, payload: res.data });
-    })
-    .catch(err =>
+    .then(res => dispatch({ type: LEAVEBUBL_SUCCESS, payload: res.data }))
+    .catch(() =>
       dispatch({
-        type: LEAVEBUBL_FAILURE,
-        payload: err.response.data.message
-      })
-    );
-};
-
-// GET ALL POSTS FOR SCHOOL
-export const GETSCHOOLPOSTS_START = "GETSCHOOLPOSTS_START";
-export const GETSCHOOLPOSTS_SUCCESS = "GETSCHOOLPOSTS_SUCCESS";
-export const GETSCHOOLPOSTS_FAILURE = "GETSCHOOLPOSTS_FAILURE";
-
-export const getSchoolPosts = () => dispatch => {
-  dispatch({ type: GETSCHOOLPOSTS_START });
-  return axios
-    .get(`https://build-week-bubl.herokuapp.com/api/posts/school`, {
-      headers: {
-        Authorization: localStorage.getItem("userToken")
-      }
-    })
-    .then(res => {
-      console.log(res);
-      dispatch({ type: GETSCHOOLPOSTS_SUCCESS, payload: res.data });
-    })
-    .catch(err =>
-      dispatch({
-        type: GETSCHOOLPOSTS_FAILURE,
-        payload: err.response.data.message
+        type: LEAVEBUBL_FAILURE
       })
     );
 };
@@ -244,12 +195,8 @@ export const addPost = newPost => dispatch => {
     .post(`https://build-week-bubl.herokuapp.com/api/posts`, newPost, {
       headers: { Authorization: localStorage.getItem("userToken") }
     })
-    .then(res => {
-      dispatch({ type: ADD_POST_SUCCESS, payload: res.data });
-    })
-    .catch(err => {
-      dispatch({ type: ADD_POST_FAILURE, payload: err.response.data.message });
-    });
+    .then(res => dispatch({ type: ADD_POST_SUCCESS, payload: res.data }))
+    .catch(() => dispatch({ type: ADD_POST_FAILURE }));
 };
 
 // ADD A COMMENT
@@ -265,14 +212,10 @@ export const addComment = newComment => dispatch => {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(res => {
-      console.log(res);
-      dispatch({ type: ADD_COMMENT_SUCCESS, payload: res.data });
-    })
-    .catch(err =>
+    .then(res => dispatch({ type: ADD_COMMENT_SUCCESS, payload: res.data }))
+    .catch(() =>
       dispatch({
-        type: ADD_COMMENT_FAILURE,
-        payload: err.response.data.message
+        type: ADD_COMMENT_FAILURE
       })
     );
 };
@@ -290,15 +233,12 @@ export const removeComment = id => dispatch => {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(res => {
-      dispatch({ type: REMOVE_COMMENT_SUCCESS, payload: res.data });
-    })
-    .catch(err => {
+    .then(res => dispatch({ type: REMOVE_COMMENT_SUCCESS, payload: res.data }))
+    .catch(() =>
       dispatch({
-        type: REMOVE_COMMENT_FAILURE,
-        payload: err.response.data.message
-      });
-    });
+        type: REMOVE_COMMENT_FAILURE
+      })
+    );
 };
 // REMOVE A POST
 export const REMOVE_POST_START = "REMOVE_POST_START";

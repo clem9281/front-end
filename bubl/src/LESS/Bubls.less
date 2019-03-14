@@ -1,4 +1,9 @@
 .bubls-area {
+  padding-top: 30%;
+
+  @media @desktop {
+    padding-top: 5%;
+  }
   .bubls {
     .custom-flex(center, center);
     flex-wrap: wrap;
@@ -47,18 +52,26 @@
     }
   }
   .explore {
-    .bubl {
-      flex-direction: column;
-      width: 15rem;
-      height: 15rem;
-      p {
-        margin: 10px 0;
+    .show-explore {
+      position: relative;
+      .hide-explore {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
       }
-      button {
-        background: rgba(255, 255, 255, 0.5);
-        border: none;
-        padding: 1rem;
-        border-radius: 5px;
+      .bubl {
+        flex-direction: column;
+        width: 15rem;
+        height: 15rem;
+        p {
+          margin: 10px 0;
+        }
+        button {
+          background: rgba(255, 255, 255, 0.5);
+          border: none;
+          padding: 1rem;
+          border-radius: 5px;
+        }
       }
     }
   }

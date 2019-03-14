@@ -14,7 +14,9 @@ class Profile extends Component {
   }
   render() {
     if (this.props.error) {
-      return <MainError />;
+      return (
+        <MainError text="Sorry, we couldn't find your profile information." />
+      );
     }
     if (this.props.userInfo) {
       const { bio, bubbles, id, name, picture, username } = this.props.userInfo;
@@ -30,7 +32,7 @@ class Profile extends Component {
           </figure>
           <div className="container">
             <h2>{name}</h2>
-            <p>{bio}</p>
+            <p className="bio">{bio}</p>
             <InterestList bubbles={bubbles} />
             <h3>My Recent Posts</h3>
             <UserPosts />
