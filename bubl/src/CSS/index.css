@@ -294,6 +294,9 @@ section.main {
   position: relative;
   top: -150px;
 }
+.profile .container .bio {
+  margin: 5% 0;
+}
 nav {
   background: #5c7e78ff;
   height: 70px;
@@ -337,7 +340,7 @@ nav .navbar-desktop-button {
 }
 .post {
   text-align: left;
-  margin: 20px auto;
+  margin: 5.5% auto;
   width: 90%;
   line-height: 1.25;
   padding-bottom: 1rem;
@@ -359,13 +362,23 @@ nav .navbar-desktop-button {
 }
 .post .post-content .name {
   font-size: 1.9rem;
-  margin-right: 0.5%;
+  margin-right: 2%;
   font-weight: bold;
+}
+@media (min-width: 1000px) {
+  .post .post-content .name {
+    margin-right: 0.5%;
+  }
 }
 .post .timestamp {
   color: grey;
   white-space: nowrap;
-  margin-left: 0.5%;
+  margin-left: 1%;
+}
+@media (min-width: 1000px) {
+  .post .timestamp {
+    margin-left: 0.5%;
+  }
 }
 .post i {
   font-size: 2rem;
@@ -396,10 +409,12 @@ nav .navbar-desktop-button {
 .post .add-comment {
   display: flex;
   justify-content: center;
+  margin-top: 4%;
+  margin-bottom: 2%;
 }
 .post .add-comment input {
   margin-right: 0.5%;
-  width: 20%;
+  width: 35%;
   border-radius: 5px;
 }
 .post .add-comment button {
@@ -411,12 +426,20 @@ nav .navbar-desktop-button {
 .interests {
   display: flex;
   justify-content: space-evenly;
-  margin: 3% 0;
+  margin: 5% 0;
 }
 .interests li {
   border: 1px solid black;
   padding: 10px 15px;
   border-radius: 20px;
+}
+.bubls-area {
+  padding-top: 30%;
+}
+@media (min-width: 1000px) {
+  .bubls-area {
+    padding-top: 5%;
+  }
 }
 .bubls-area .bubls {
   display: flex;
@@ -467,15 +490,23 @@ nav .navbar-desktop-button {
   width: 21%;
   background: rgba(255, 255, 255, 0.5);
 }
-.bubls-area .explore .bubl {
+.bubls-area .explore .show-explore {
+  position: relative;
+}
+.bubls-area .explore .show-explore .hide-explore {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.bubls-area .explore .show-explore .bubl {
   flex-direction: column;
   width: 15rem;
   height: 15rem;
 }
-.bubls-area .explore .bubl p {
+.bubls-area .explore .show-explore .bubl p {
   margin: 10px 0;
 }
-.bubls-area .explore .bubl button {
+.bubls-area .explore .show-explore .bubl button {
   background: rgba(255, 255, 255, 0.5);
   border: none;
   padding: 1rem;
@@ -505,6 +536,7 @@ nav .navbar-desktop-button {
   border-left: 1px solid grey;
   z-index: 999;
   background: white;
+  border-bottom: 1px solid grey;
 }
 .dropdown a {
   color: black;
@@ -514,7 +546,10 @@ nav .navbar-desktop-button {
   border-bottom: 1px solid grey;
 }
 .dropdown #dropdown-button {
-  color: black;
+  background: transparent;
+  border: none;
+  margin-left: 25%;
+  padding: 5% 10%;
 }
 .update-form .container {
   top: 0;
@@ -553,21 +588,35 @@ nav .navbar-desktop-button {
   border-radius: 5px;
 }
 .post-list .title-container {
-  margin-top: 1%;
+  margin-top: 5%;
   text-align: center;
+}
+@media (min-width: 1000px) {
+  .post-list .title-container {
+    margin-top: 1%;
+  }
 }
 .post-list .title-container button {
   padding: 0.2% 1.5%;
   border-radius: 15px;
 }
 .post-list .title-container h2 {
-  margin-top: 1%;
+  margin-top: 5%;
+}
+@media (min-width: 1000px) {
+  .post-list .title-container h2 {
+    margin-top: 2.5%;
+  }
 }
 .post-list .add-post {
   display: flex;
   flex-direction: column;
-  width: 25%;
-  margin: 0 auto;
+  margin: 0 5%;
+}
+@media (min-width: 1000px) {
+  .post-list .add-post {
+    margin: 0 35%;
+  }
 }
 .post-list .add-post .post-input {
   padding: 5% 2%;
@@ -586,4 +635,9 @@ nav .navbar-desktop-button {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+}
+.block-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

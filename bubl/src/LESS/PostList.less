@@ -3,8 +3,12 @@
 // }
 .post-list {
   .title-container {
-    margin-top: 1%;
+    margin-top: 5%;
     text-align: center;
+
+    @media @desktop {
+      margin-top: 1%;
+    }
 
     button {
       padding: 0.2% 1.5%;
@@ -12,14 +16,21 @@
     }
 
     h2 {
-      margin-top: 1%;
+      margin-top: 5%;
+
+      @media @desktop {
+        margin-top: 2.5%;
+      }
     }
   }
   .add-post {
     display: flex;
     flex-direction: column;
-    width: 25%;
-    margin: 0 auto;
+    margin: 0 5%;
+
+    @media @desktop {
+      margin: 0 35%;
+    }
 
     .post-input {
       padding: 5% 2%;

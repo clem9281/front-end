@@ -37,7 +37,6 @@ class NavBar extends Component {
   };
 
   render() {
-    console.log(this.props.history);
     return (
       <header>
         <nav>

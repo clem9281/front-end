@@ -13,6 +13,8 @@ import {
 } from "../actions";
 // components
 import UpdateForm from "./UpdateForm";
+import MainError from "./MainError";
+import BlockLoader from "./BlockLoader";
 
 class Post extends Component {
   constructor(props) {
@@ -61,12 +63,13 @@ class Post extends Component {
   };
   // handle add comment
   handleSubmit = e => {
-    console.log(this.state.newComment);
     e.preventDefault();
     this.props
       .addComment(this.state.newComment)
       .then(() => {
-        this.getData();
+        if (!this.props.error) {
+          this.getData();
+        }
       })
       .then(() => {
         this.setState({
@@ -81,7 +84,9 @@ class Post extends Component {
   removeComment = (e, id) => {
     e.preventDefault();
     this.props.removeComment(id).then(() => {
-      this.getData();
+      if (!this.props.error) {
+        this.getData();
+      }
     });
   };
   // handle remove post
@@ -123,6 +128,9 @@ class Post extends Component {
     const postTimestamp = updated_at
       ? moment(updated_at).fromNow()
       : moment(created_at).fromNow();
+    if (this.props.error) {
+      return <MainError text="Whoops, something went wrong" />;
+    }
     // if updating, show the form
     if (this.state.showForm) {
       return (
@@ -162,32 +170,38 @@ class Post extends Component {
             </>
           )}
         </p>
-        {/* if the comments exist, map over them */}
-        {comments &&
-          comments.map(comment => (
-            <p className="comment" key={comment.id}>
-              {/* commenter name */}
-              <span className="comment-user">{comment.name} </span>
+        {this.props.commentLoading ? (
+          <BlockLoader />
+        ) : (
+          <>
+            {/* if the comments exist, map over them */}
+            {comments &&
+              comments.map(comment => (
+                <p className="comment" key={comment.id}>
+                  {/* commenter name */}
+                  <span className="comment-user">{comment.name} </span>
 
-              {/* comment content */}
-              {comment.comment}
+                  {/* comment content */}
+                  {comment.comment}
 
-              {/* timestamp from moment */}
-              <span className="timestamp">
-                {moment(comment.created_at).fromNow()}
-              </span>
+                  {/* timestamp from moment */}
+                  <span className="timestamp">
+                    {moment(comment.created_at).fromNow()}
+                  </span>
 
-              {/* if the comment belongs to the logged in user display the delete comment button */}
-              {this.state.user === comment.name && (
-                <button
-                  className="delete-post"
-                  onClick={e => this.removeComment(e, comment.id)}
-                >
-                  <i className="fas fa-trash-alt" />
-                </button>
-              )}
-            </p>
-          ))}
+                  {/* if the comment belongs to the logged in user display the delete comment button */}
+                  {this.state.user === comment.name && (
+                    <button
+                      className="delete-post"
+                      onClick={e => this.removeComment(e, comment.id)}
+                    >
+                      <i className="fas fa-trash-alt" />
+                    </button>
+                  )}
+                </p>
+              ))}{" "}
+          </>
+        )}
 
         {/* add a comment form */}
         <form className="add-comment" onSubmit={this.handleSubmit}>
@@ -203,9 +217,11 @@ class Post extends Component {
     );
   }
 }
-const mapStateToProps = ({ userInfo, updatedPost }) => ({
+const mapStateToProps = ({ userInfo, updatedPost, error, commentLoading }) => ({
   userInfo,
-  updatedPost
+  updatedPost,
+  error,
+  commentLoading
 });
 
 export default withRouter(
