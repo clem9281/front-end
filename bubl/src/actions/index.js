@@ -108,7 +108,7 @@ export const signUpStart = info => dispatch => {
 // GET USER POSTS
 export const getPostsStart = () => dispatch => {
   dispatch({ type: GETPOSTS_START });
-  axios
+  return axios
     .get("https://build-week-bubl.herokuapp.com/api/posts", {
       headers: {
         Authorization: localStorage.getItem("userToken")
@@ -136,6 +136,7 @@ export const getUserInfo = () => dispatch => {
       })
     );
 };
+// GET POSTS BY BUBL
 export const getBublPosts = id => dispatch => {
   dispatch({ type: GETBUBLPOSTS_START });
   return axios
@@ -145,7 +146,7 @@ export const getBublPosts = id => dispatch => {
       }
     })
     .then(res => {
-      console.log(res);
+      console.log("BUBL POST RESPONSE", res);
       dispatch({ type: GETBUBLPOSTS_SUCCESS, payload: res.data });
     })
     .catch(err =>
@@ -155,6 +156,7 @@ export const getBublPosts = id => dispatch => {
       })
     );
 };
+// GET BUBLS BY SCHOOL
 export const getSchoolBubls = () => dispatch => {
   dispatch({ type: GETSCHOOLBUBLS_START });
   return axios
@@ -174,6 +176,7 @@ export const getSchoolBubls = () => dispatch => {
       })
     );
 };
+// JOIN A BUBL
 export const joinBubl = id => dispatch => {
   dispatch({ type: JOINBUBL_START });
   return axios
@@ -197,6 +200,7 @@ export const joinBubl = id => dispatch => {
       })
     );
 };
+// LEAVE A BUBL
 export const leaveBubl = id => dispatch => {
   dispatch({ type: LEAVEBUBL_START });
   return axios
@@ -220,6 +224,7 @@ export const leaveBubl = id => dispatch => {
       })
     );
 };
+// GET POSTS BY SCHOOL
 export const getSchoolPosts = () => dispatch => {
   dispatch({ type: GETSCHOOLPOSTS_START });
   return axios
@@ -239,7 +244,7 @@ export const getSchoolPosts = () => dispatch => {
       })
     );
 };
-
+// ADD A POST
 export const addPost = newPost => dispatch => {
   dispatch({ type: ADD_POST_START });
   return axios
@@ -253,6 +258,7 @@ export const addPost = newPost => dispatch => {
       dispatch({ type: ADD_POST_FAILURE, payload: err.response.data.message });
     });
 };
+// ADD COMMENT
 export const addComment = newComment => dispatch => {
   dispatch({ type: ADD_COMMENT_START });
   return axios
@@ -272,7 +278,7 @@ export const addComment = newComment => dispatch => {
       })
     );
 };
-
+// REMOVE A COMMENT
 export const removeComment = id => dispatch => {
   dispatch({ type: REMOVE_COMMENT_START });
   return axios
@@ -291,6 +297,7 @@ export const removeComment = id => dispatch => {
       });
     });
 };
+// REMOVE A POST
 export const removePost = id => dispatch => {
   dispatch({ type: REMOVE_POST_START });
   return axios
@@ -301,7 +308,7 @@ export const removePost = id => dispatch => {
     })
     .then(res => {
       console.log(res);
-      dispatch({ type: REMOVE_POST_SUCCESS, payload: res.data });
+      dispatch({ type: REMOVE_POST_SUCCESS });
     })
     .catch(err => {
       dispatch({
@@ -310,6 +317,7 @@ export const removePost = id => dispatch => {
       });
     });
 };
+// UPDATE A POST
 export const updatePost = (id, newInfo) => dispatch => {
   dispatch({ type: UPDATE_POST_START });
   return axios
@@ -329,12 +337,15 @@ export const updatePost = (id, newInfo) => dispatch => {
       });
     });
 };
+// GET RID OF THE UPDATED POST ONCE IT'S USED
 export const clearUpdatedPost = () => dispatch => {
   dispatch({ type: CLEAR_UPDATED_POST });
 };
+// GET RID OF THE ERROR
 export const clearError = () => dispatch => {
   dispatch({ type: CLEAR_ERROR });
 };
+// LOGOUT
 export const logOut = () => dispatch => {
   dispatch({ type: LOG_OUT });
   return localStorage.clear();

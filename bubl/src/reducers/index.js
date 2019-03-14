@@ -81,8 +81,7 @@ const initialState = {
   schoolsError: null,
   error: null,
   userPosts: null,
-  userInfo: null,
-  updatedPost: null
+  userInfo: null
 };
 
 export const reducer = (state = initialState, action) => {

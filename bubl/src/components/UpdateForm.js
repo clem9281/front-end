@@ -17,7 +17,7 @@ class UpdateForm extends Component {
   }
   componentDidMount() {
     // you need an array of the bubl ids for the put request
-    console.log(1, this.props.bubbles);
+    console.log("UPDATE FORM", this.props);
     const bubbleIdsArray = this.props.bubbles.map(bubble => bubble.id);
     // if there is updated post information use that, else get the info thats passed down from props
     console.log(2, bubbleIdsArray);
@@ -42,7 +42,7 @@ class UpdateForm extends Component {
   };
   handleSubmit = (e, id) => {
     e.preventDefault();
-    console.log(this.state.updateInfo);
+    console.log("GOING IN PUT REQUEST", this.state.updateInfo);
     this.props
       .updatePost(id, this.state.updateInfo)
       .then(() => {
