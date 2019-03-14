@@ -37,10 +37,12 @@ class NavBar extends Component {
       <header>
         <nav>
           <div className="brand">
-            <img src={bublLogo} alt="" />
+            <a href="https://bubl-marketing.netlify.com/" target="_blank">
+              <img src={bublLogo} alt="bubl logo" />
+            </a>
           </div>
           <div className="links">
-            {this.state.width > 500 ? (
+            {this.state.width > 600 ? (
               <>
                 <NavLink exact to="/bubls">
                   My Bubls
@@ -48,10 +50,18 @@ class NavBar extends Component {
                 <NavLink exact to="/">
                   Profile
                 </NavLink>
-                <button onClick={this.logOut}> Log Out </button>
+                <NavLink exact to="/explore">
+                  Explore Interests
+                </NavLink>
+                <button className="navbar-desktop-button" onClick={this.logOut}>
+                  Log Out
+                </button>
               </>
             ) : (
-              <button onClick={this.handleMenuClick}>
+              <button
+                className="navbar-desktop-button"
+                onClick={this.handleMenuClick}
+              >
                 <i className="fas fa-bars fa-2x" />
               </button>
             )}

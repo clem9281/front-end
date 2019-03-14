@@ -19,9 +19,8 @@ class Bubls extends Component {
     };
   }
   componentDidMount() {
-    if (!this.props.userInfo) {
-      this.props.getUserInfo();
-    }
+    // get the user info, whether it exists in the store or not: that way it'll get any recent changes to it
+    this.props.getUserInfo();
   }
   handleFocus = () => {
     this.props.getSchoolBubls().then(() => {
@@ -35,12 +34,9 @@ class Bubls extends Component {
       this.setState({ result: [] });
     }
   };
-  handleClickInput = id => {
+  // when you click a bubl, go to that bubl's post page
+  handleClickBubl = id => {
     this.props.getBublPosts(id).then(this.props.history.push(`bubls/${id}`));
-  };
-  handleJoin = (e, id) => {
-    e.preventDefault();
-    this.props.joinBubl(id);
   };
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -63,7 +59,7 @@ class Bubls extends Component {
               <div
                 className="bubl"
                 key={bubl.id}
-                onClick={() => this.handleClickInput(bubl.id)}
+                onClick={() => this.handleClickBubl(bubl.id)}
               >
                 <div className="accent" />
                 {bubl.bubble}
@@ -89,12 +85,13 @@ class Bubls extends Component {
             )}
             {this.state.result.length > 0 &&
               this.state.result.map(bubl => (
-                <div key={bubl.id} className="bubl">
+                <div
+                  key={bubl.id}
+                  className="bubl"
+                  onClick={() => this.handleClickBubl(bubl.id)}
+                >
                   <div className="accent" />
                   <p>{bubl.bubble}</p>
-                  <button onClick={e => this.handleJoin(e, bubl.id)}>
-                    Join
-                  </button>
                 </div>
               ))}
           </div>
