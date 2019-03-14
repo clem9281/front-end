@@ -12,6 +12,7 @@ import {
 // reducer
 import Post from "./Post";
 import FullPageLoader from "./FullPageLoader";
+import MainError from "./MainError";
 
 class PostList extends React.Component {
   state = {
@@ -39,9 +40,10 @@ class PostList extends React.Component {
     });
 
     // if all the bubls don't exist on the store, get them
-    if (!this.props.allSchoolBubls) {
+    if (!this.props.allSchoolBubls && !this.props.error) {
       this.props.getSchoolBubls();
     }
+
     // the bubbles property is needed for the post request to add a post, set it to this bubble
     this.setState({
       postData: {
@@ -83,6 +85,10 @@ class PostList extends React.Component {
     this.props.leaveBubl(id).then(() => this.props.history.push("/bubls"));
   };
   render() {
+    // if there is an error load the error page
+    if (this.props.error) {
+      return <MainError />;
+    }
     // wait to render until all the needed data exists in the store
     if (
       this.props.bublPosts &&

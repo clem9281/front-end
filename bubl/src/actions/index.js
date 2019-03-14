@@ -94,12 +94,11 @@ export const getUserInfo = () => dispatch => {
       }
     })
     .then(res => dispatch({ type: GETUSERINFO_SUCCESS, payload: res.data }))
-    .catch(err =>
+    .catch(err => {
       dispatch({
-        type: GETUSERINFO_FAILURE,
-        payload: err.response.data.message
-      })
-    );
+        type: GETUSERINFO_FAILURE
+      });
+    });
 };
 
 // GET POSTS FOR BUBL
@@ -146,8 +145,7 @@ export const getSchoolBubls = () => dispatch => {
     })
     .catch(err =>
       dispatch({
-        type: GETSCHOOLBUBLS_FAILURE,
-        payload: err.response.data.message
+        type: GETSCHOOLBUBLS_FAILURE
       })
     );
 };

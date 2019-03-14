@@ -217,7 +217,7 @@ export const reducer = (state = initialState, action) => {
         ...state,
         gettingUserInfo: false,
         user: null,
-        error: action.payload
+        error: true
       };
     // GET POSTS FOR BUBL
     case GETBUBLPOSTS_START:
@@ -257,7 +257,7 @@ export const reducer = (state = initialState, action) => {
         ...state,
         gettingSchoolBubls: false,
         allSchoolBubls: null,
-        error: action.payload
+        error: true
       };
     // ADD POST
     case ADD_POST_START:

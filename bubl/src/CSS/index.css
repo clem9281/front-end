@@ -357,9 +357,15 @@ nav .navbar-desktop-button {
   font-size: 2rem;
   font-weight: bold;
 }
+.post .post-content .name {
+  font-size: 1.9rem;
+  margin-right: 0.5%;
+  font-weight: bold;
+}
 .post .timestamp {
   color: grey;
   white-space: nowrap;
+  margin-left: 0.5%;
 }
 .post i {
   font-size: 2rem;
@@ -367,10 +373,12 @@ nav .navbar-desktop-button {
 }
 .post .comment-user {
   font-weight: 600;
+  font-size: 1.9rem;
 }
 .post .comment {
   width: 95%;
   margin: 2rem auto;
+  font-size: 1.5rem;
 }
 .post .delete-post,
 .post .update-post {
@@ -388,6 +396,17 @@ nav .navbar-desktop-button {
 .post .add-comment {
   display: flex;
   justify-content: center;
+}
+.post .add-comment input {
+  margin-right: 0.5%;
+  width: 20%;
+  border-radius: 5px;
+}
+.post .add-comment button {
+  border-radius: 5px;
+}
+.post .add-comment button:hover {
+  color: #66bb6a;
 }
 .interests {
   display: flex;
@@ -558,4 +577,13 @@ nav .navbar-desktop-button {
   margin: 2% auto;
   padding: 1.5% 8%;
   border-radius: 15px;
+}
+.post-list .add-post button:hover {
+  color: #66bb6a;
+}
+.main-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }

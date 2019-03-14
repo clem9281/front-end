@@ -9,9 +9,11 @@ import {
   getUserInfo,
   getSchoolBubls,
   getBublPosts,
-  joinBubl
+  joinBubl,
+  clearError
 } from "../actions";
-
+// components
+import BlockError from "./BlockError";
 class Bubls extends Component {
   constructor(props) {
     super(props);
@@ -24,21 +26,25 @@ class Bubls extends Component {
     // get the user info, whether it exists in the store or not: that way it'll get any recent changes to it
     this.props.getUserInfo();
   }
+  // clear the error before you go anywhere else
+  componentWillUnmount() {
+    if (this.props.error) {
+      this.props.clearError();
+    }
+  }
+  // get the school bubls when you click the search bar
   handleFocus = () => {
-    this.props.getSchoolBubls().then(() => {
-      if (this.props.allSchoolBubls && this.state.bublSearch.length === 0) {
-        this.setState({ result: this.props.allSchoolBubls });
-      }
-    });
-  };
-  handleBlur = e => {
-    if (this.state.bublSearch.length === 0) {
-      this.setState({ result: [] });
+    if (!this.props.allSchoolBubls) {
+      this.props.getSchoolBubls().then(() => {
+        if (this.props.allSchoolBubls && this.state.bublSearch.length === 0) {
+          this.setState({ result: this.props.allSchoolBubls });
+        }
+      });
     }
   };
   // when you click a bubl, go to that bubl's post page
   handleClickBubl = id => {
-    this.props.getBublPosts(id).then(this.props.history.push(`bubls/${id}`));
+    this.props.history.push(`bubls/${id}`);
   };
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -57,6 +63,7 @@ class Bubls extends Component {
         <section className="bubls-area container">
           <h2>My Bubls</h2>
           <div className="bubls">
+            {/* if the userInfo exists map over the users bubls */}
             {this.props.userInfo.bubbles.map(bubl => (
               <div
                 className="bubl"
@@ -74,7 +81,6 @@ class Bubls extends Component {
               type="text"
               name="bublSearch"
               onFocus={this.handleFocus}
-              // onBlur={this.handleBlur}
               value={this.state.bublSearch}
               onChange={this.handleChange}
               placeholder="Find Bubls"
@@ -82,9 +88,14 @@ class Bubls extends Component {
             />
           </form>
           <div className="explore bubls">
+            {/* if the school bubls exist show them here */}
             {this.props.gettingSchoolBubls && (
               <Loader type="ThreeDots" color="#66bb6a" />
             )}
+            {this.props.error && (
+              <BlockError text="Sorry, we couldn't find any Bubls for your school." />
+            )}
+            {/* check the local state for the result we set, as long as there is one show it */}
             {this.state.result.length > 0 &&
               this.state.result.map(bubl => (
                 <div
@@ -103,17 +114,15 @@ class Bubls extends Component {
     return <div />;
   }
 }
-const mapStateToProps = state => {
-  return {
-    userInfo: state.userInfo,
-    allSchoolBubls: state.allSchoolBubls,
-    gettingSchoolBubls: state.gettingSchoolBubls,
-    error: state.error
-  };
-};
+const mapStateToProps = ({
+  userInfo,
+  allSchoolBubls,
+  gettingSchoolBubls,
+  error
+}) => ({ userInfo, allSchoolBubls, gettingSchoolBubls, error });
 export default withRouter(
   connect(
     mapStateToProps,
-    { getUserInfo, getSchoolBubls, getBublPosts, joinBubl }
+    { getUserInfo, getSchoolBubls, getBublPosts, joinBubl, clearError }
   )(Bubls)
 );

@@ -18,21 +18,30 @@
     font-weight: bold;
   }
   .post-content {
+    .name {
+      font-size: 1.9rem;
+      margin-right: 0.5%;
+      font-weight: bold;
+    }
   }
   .timestamp {
     color: grey;
     white-space: nowrap;
+    margin-left: 0.5%;
   }
+
   i {
     font-size: 2rem;
     margin-right: 1.6rem;
   }
   .comment-user {
     font-weight: 600;
+    font-size: 1.9rem;
   }
   .comment {
     width: 95%;
     margin: 2rem auto;
+    font-size: 1.5rem;
   }
   .delete-post,
   .update-post {
@@ -45,11 +54,25 @@
 
     &:hover {
       cursor: pointer;
-      color: #b8e986;
+      color: @bubl1;
     }
   }
   .add-comment {
     display: flex;
     justify-content: center;
+
+    input {
+      margin-right: 0.5%;
+      width: 20%;
+      border-radius: 5px;
+    }
+
+    button {
+      border-radius: 5px;
+
+      &:hover {
+        color: @bubl2;
+      }
+    }
   }
 }

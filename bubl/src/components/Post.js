@@ -167,7 +167,7 @@ class Post extends Component {
           comments.map(comment => (
             <p className="comment" key={comment.id}>
               {/* commenter name */}
-              <span className="comment-user">{comment.name}</span>
+              <span className="comment-user">{comment.name} </span>
 
               {/* comment content */}
               {comment.comment}
