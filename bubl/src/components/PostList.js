@@ -25,6 +25,7 @@ class PostList extends React.Component {
       this.props.getBublPosts(this.props.match.params.id);
     }
     // if the user info doesn't exist on the store, get it, set the userid on component state. If user info does exist, just set the user id on component state
+
     this.props.getUserInfo().then(() => {
       this.setState({
         postData: {
@@ -32,7 +33,6 @@ class PostList extends React.Component {
           user_id: this.props.userInfo.id
         }
       });
-      console.log(this.props.userInfo.id);
     });
 
     // if all the bubls don't exist on the store, get them
@@ -113,6 +113,7 @@ class PostList extends React.Component {
             <Post post={post} key={post.id} />
           ))}
           <form onSubmit={this.addPost}>
+            {/* cannot add a comment longer than 256 characters */}
             <textarea
               className="post-input"
               type="text"

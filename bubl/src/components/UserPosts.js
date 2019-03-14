@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import NavBar from "./NavBar";
+// components
 import Post from "./Post";
-import InterestList from "./InterestList";
+// actions
 import { getPostsStart } from "../actions";
 
 class UserPosts extends Component {

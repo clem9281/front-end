@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loginStart, clearError } from "../actions";
 import { Link } from "react-router-dom";
+// Logo image
 import bublLogo from "../assets/bubl-logo.png";
+// actions
+import { loginStart, clearError } from "../actions";
+// components
 import LoginError from "./LoginError";
-import "../CSS/index.css";
-
+import FullPageLoader from "./FullPageLoader";
+import SignUpSuccess from "./SignupSuccess";
 class Login extends Component {
   state = {
     credentials: {
@@ -34,6 +37,10 @@ class Login extends Component {
   render() {
     console.log(this.props);
     const { username, password } = this.state.credentials;
+    // display the loader while logging in
+    if (this.props.loggingIn) {
+      return <FullPageLoader />;
+    }
     return (
       <section className="login">
         <div className="container">
@@ -58,7 +65,10 @@ class Login extends Component {
                 onChange={this.handleChange}
                 placeholder="Password"
               />
+              {/* if there is an error display the login error */}
               {this.props.error && <LoginError error={this.props.error} />}
+              {/* if the user just sign up display the welcome message */}
+              {this.props.signupSuccess && <SignUpSuccess />}
               <button>Login</button>
               <p>or</p>
               <Link to="/signup" onClick={this.props.clearError}>
@@ -72,13 +82,19 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = ({ error, schools, gettingSchools }) => {
-  return {
-    error,
-    schools,
-    gettingSchools
-  };
-};
+const mapStateToProps = ({
+  error,
+  schools,
+  gettingSchools,
+  loggingIn,
+  signupSuccess
+}) => ({
+  error,
+  schools,
+  gettingSchools,
+  loggingIn,
+  signupSuccess
+});
 
 export default connect(
   mapStateToProps,

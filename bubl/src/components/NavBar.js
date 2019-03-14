@@ -50,9 +50,7 @@ class NavBar extends Component {
                 <NavLink exact to="/">
                   Profile
                 </NavLink>
-                <NavLink exact to="/explore">
-                  Explore Interests
-                </NavLink>
+
                 <button className="navbar-desktop-button" onClick={this.logOut}>
                   Log Out
                 </button>

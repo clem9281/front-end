@@ -160,6 +160,10 @@ button {
 .App {
   min-height: 100vh;
 }
+textarea::placeholder {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+}
 .login,
 .signup-form {
   min-height: 100vh;
@@ -361,10 +365,16 @@ nav .navbar-desktop-button {
   width: 95%;
   margin: 2rem auto;
 }
-.post .fa-trash-alt {
+.post .delete-post,
+.post .update-post {
+  background: transparent;
+  padding: 0;
+  border: none;
+}
+.post i {
   margin-left: 10px;
 }
-.post .fa-trash-alt:hover {
+.post i:hover {
   cursor: pointer;
   color: #b8e986;
 }
@@ -476,13 +486,39 @@ nav .navbar-desktop-button {
 .dropdown #dropdown-button {
   color: black;
 }
-.explore .inline-input {
-  margin: 2rem 0;
+.update-form .container {
+  top: 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  align-content: center;
 }
-.explore .inline-input input {
-  padding: 0.8rem;
+.update-form .container form {
+  position: relative;
+  padding: 2rem;
+  width: auto;
+}
+.update-form .container form .cancel-update {
+  background: transparent;
+  border: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.update-form .container textarea {
+  display: block;
+  margin: 0 auto;
+}
+.full-loader {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.signup-success {
+  margin: 2rem;
+  border: 1px solid #00acc1;
+  padding: 1rem;
   border-radius: 5px;
-  border: 1px solid grey;
 }

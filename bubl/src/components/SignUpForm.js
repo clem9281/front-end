@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
-import { withRouter } from "react-router-dom";
-import { signUpStart, getSchoolsStart, clearError } from "../actions";
 import { Link } from "react-router-dom";
+// logo image
+import bublLogo from "../assets/bubl-logo.png";
+// actions
+import { signUpStart, getSchoolsStart, clearError } from "../actions";
+// components
 import Loader from "react-loader-spinner";
 import LoginError from "./LoginError";
-import bublLogo from "../assets/bubl-logo.png";
+import FullPageLoader from "./FullPageLoader";
 
 class SignUpForm extends Component {
   constructor(props) {
@@ -22,22 +24,29 @@ class SignUpForm extends Component {
     };
   }
   componentDidMount() {
-    // axios.get("https://build-week-bubl.herokuapp.com/api/schools").then(res =>
-    //   this.setState({
-    //     schools: res.data,
-    //     information: { ...this.state.information, school_id: res.data[0].id }
-    //   })
-    // );
-    this.props.getSchoolsStart();
+    // get the schools for the school select field, once you have the schools set the school id
+    this.props.getSchoolsStart().then(() => {
+      if (this.props.schools) {
+        this.setState({
+          information: {
+            ...this.state.information,
+            school_id: this.props.schools[0].id
+          }
+        });
+      }
+    });
   }
+  // handle sign up
   signUp = (e, info) => {
     e.preventDefault();
     console.log(this.state.information);
     this.props
       .signUpStart(info)
-      .then(() => !this.props.error && this.props.history.push("/"));
+      .then(() => !this.props.error && this.props.history.push("/login"));
   };
+  // form change: if changing the school we need to get it's id
   handleChange = e => {
+    console.log(e.target.name);
     if (e.target.name === "school_id") {
       console.log("here");
       this.setState({
@@ -54,9 +63,11 @@ class SignUpForm extends Component {
         }
       });
     }
-    console.log(typeof this.state.information.school_id);
   };
   render() {
+    if (this.props.signingUp) {
+      return <FullPageLoader />;
+    }
     return (
       <section className="signup-form">
         <div className="container">
@@ -125,18 +136,21 @@ class SignUpForm extends Component {
   }
 }
 
-const mapStateToProps = ({ schoolsError, schools, gettingSchools, error }) => {
-  return {
-    error,
-    schoolsError,
-    schools,
-    gettingSchools
-  };
-};
+const mapStateToProps = ({
+  schoolsError,
+  schools,
+  gettingSchools,
+  error,
+  signingUp
+}) => ({
+  error,
+  schoolsError,
+  schools,
+  gettingSchools,
+  signingUp
+});
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    { signUpStart, getSchoolsStart, clearError }
-  )(SignUpForm)
-);
+export default connect(
+  mapStateToProps,
+  { signUpStart, getSchoolsStart, clearError }
+)(SignUpForm);
