@@ -73,6 +73,7 @@ const initialState = {
   addingComment: false,
   removingComment: false,
   updatingPost: false,
+  signupSuccess: false,
   // data items
   schools: null,
   allSchoolBubls: null,
@@ -98,14 +99,16 @@ export const reducer = (state = initialState, action) => {
         ...state,
         loggingIn: false,
         token: action.payload,
-        error: null
+        error: null,
+        signupSuccess: false
       };
     case LOGIN_FAILURE:
       return {
         ...state,
         loggingIn: false,
         token: null,
-        error: action.payload
+        error: action.payload,
+        signupSuccess: false
       };
     // GET SCHOOLS
     case GETSCHOOLS_START:
@@ -137,13 +140,15 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         signingUp: false,
-        error: null
+        error: null,
+        signupSuccess: true
       };
     case SIGNUP_FAILURE:
       return {
         ...state,
         signingUp: false,
-        error: action.payload
+        error: action.payload,
+        signupSuccess: false
       };
     // GET USER POSTS
     case GETPOSTS_START:
@@ -230,20 +235,20 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         gettingBublPosts: true,
-        addingPost: true,
-        error: null
+        addingPost: true
       };
     case ADD_POST_SUCCESS:
       return {
         ...state,
         bublPosts: [...state.bublPosts, action.payload],
-        addingPost: false
+        addingPost: false,
+        error: null
       };
     case ADD_POST_FAILURE:
       return {
         ...state,
         addingPost: false,
-        error: action.err
+        error: action.payload
       };
     // UPDATE POST
     case UPDATE_POST_START:
@@ -273,13 +278,14 @@ export const reducer = (state = initialState, action) => {
     case JOINBUBL_SUCCESS:
       return {
         ...state,
-        joiningBubl: false
+        joiningBubl: false,
+        error: null
       };
     case JOINBUBL_FAILURE:
       return {
         ...state,
         joiningBubl: false,
-        error: true
+        error: action.payload
       };
     // LEAVE BUBL
     case LEAVEBUBL_START:
@@ -296,7 +302,7 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         joiningBubl: false,
-        error: true
+        error: action.payload
       };
     // ADD COMMENT
     case ADD_COMMENT_START:
