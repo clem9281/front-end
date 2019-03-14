@@ -48,11 +48,18 @@ import {
   REMOVE_COMMENT_START,
   REMOVE_COMMENT_SUCCESS,
   REMOVE_COMMENT_FAILURE,
+  // UPDATE COMMENT
+  UPDATE_POST_START,
+  UPDATE_POST_SUCCESS,
+  UPDATE_POST_FAILURE,
+  // CLEAR UPDATED POST
+  CLEAR_UPDATED_POST,
   // CLEAR ERROR
   CLEAR_ERROR
 } from "../actions";
 
 const initialState = {
+  // loading checkers
   loggingIn: false,
   loggingOut: false,
   gettingSchools: false,
@@ -65,6 +72,8 @@ const initialState = {
   addingPost: false,
   addingComment: false,
   removingComment: false,
+  updatingPost: false,
+  // data items
   schools: null,
   allSchoolBubls: null,
   bublPosts: null,
@@ -72,7 +81,8 @@ const initialState = {
   schoolsError: null,
   error: null,
   userPosts: null,
-  userInfo: null
+  userInfo: null,
+  updatedPost: null
 };
 
 export const reducer = (state = initialState, action) => {
@@ -236,6 +246,25 @@ export const reducer = (state = initialState, action) => {
         addingPost: false,
         error: action.err
       };
+    // UPDATE POST
+    case UPDATE_POST_START:
+      return {
+        ...state,
+        updatingPost: true
+      };
+    case UPDATE_POST_SUCCESS:
+      return {
+        ...state,
+        updatingPost: false,
+        updatedPost: action.payload,
+        error: null
+      };
+    case UPDATE_POST_FAILURE:
+      return {
+        ...state,
+        updatingPost: false,
+        error: action.payload
+      };
     // JOIN BUBL
     case JOINBUBL_START:
       return {
@@ -307,6 +336,12 @@ export const reducer = (state = initialState, action) => {
         ...state,
         removingComment: false,
         error: true
+      };
+    // CLEAR THE UPDATED POST
+    case CLEAR_UPDATED_POST:
+      return {
+        ...state,
+        updatedPost: null
       };
     // CLEAR ERROR
     case CLEAR_ERROR:

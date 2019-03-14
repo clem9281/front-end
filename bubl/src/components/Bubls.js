@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import NavBar from "./NavBar";
+import { withRouter } from "react-router-dom";
+// extras
+import FuzzySearch from "fuzzy-search";
+import Loader from "react-loader-spinner";
+// actions
 import {
   getUserInfo,
   getSchoolBubls,
   getBublPosts,
   joinBubl
 } from "../actions";
-import { withRouter } from "react-router-dom";
-import FuzzySearch from "fuzzy-search";
-import Loader from "react-loader-spinner";
+
 class Bubls extends Component {
   constructor(props) {
     super(props);

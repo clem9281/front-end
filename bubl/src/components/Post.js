@@ -8,6 +8,7 @@ import {
   getUserInfo,
   removePost
 } from "../actions";
+import UpdateForm from "./UpdateForm";
 
 class Post extends Component {
   constructor(props) {
@@ -17,7 +18,10 @@ class Post extends Component {
         post_id: "",
         comment: ""
       },
-      user: ""
+      user: "",
+      userId: "",
+      showForm: false,
+      postContent: ""
     };
   }
   componentDidMount() {
@@ -28,10 +32,18 @@ class Post extends Component {
         post_id: this.props.post.id
       }
     });
-    // get the user info in case there have been any changes to ir
-    this.props
-      .getUserInfo()
-      .then(() => this.setState({ user: this.props.userInfo.name }));
+    // set the postContent to the post content passed down in props
+    this.setState({
+      ...this.state,
+      postContent: this.props.post.post_content
+    });
+    // get the user info in case there have been any changes to it
+    this.props.getUserInfo().then(() =>
+      this.setState({
+        user: this.props.userInfo.name,
+        userId: this.props.userInfo.id
+      })
+    );
   }
   // handle form change
   handleChange = e => {
@@ -68,32 +80,66 @@ class Post extends Component {
   // handle remove post
   removePost = (e, id) => {
     e.preventDefault();
-    e.stopPropagation();
     this.props.removePost(id);
   };
-
+  handleClickUpdate = () => {
+    this.setState({ showForm: !this.state.showForm });
+  };
+  updatePostContent = content => {
+    console.log("called");
+    this.setState({ ...this.state, postContent: content });
+  };
   render() {
+    console.log(this.state);
     const {
       post_content,
       updated_at,
       comments,
-      likes,
       name,
-      post,
-      id
+      user_id,
+      id,
+      bubbles
     } = this.props.post;
+    // if updating, show the form
+    if (this.state.showForm) {
+      return (
+        <UpdateForm
+          showForm={this.handleClickUpdate}
+          postContent={post_content}
+          postId={id}
+          bubbles={bubbles}
+          updatePostContent={this.updatePostContent}
+        />
+      );
+    }
     return (
       <div className="post">
         <p className="post-content">
           <span className="name">{name} </span>
-          {post_content}
+          {this.state.postContent}
+
+          {/* moment library to create a 'how long ago' timestamp */}
           <span className="timestamp">{` ${moment(
             updated_at
           ).fromNow()}`}</span>
-          <span className="delete-post" onClick={e => this.removePost(e, id)}>
-            <i className="fas fa-trash-alt" />
-          </span>
+
+          {/* if the post belongs to the logged in user, display the delete and update post buttons */}
+          {(this.state.user === name || this.state.userId === user_id) && (
+            <>
+              <button
+                className="delete-post"
+                onClick={e => this.removePost(e, id)}
+              >
+                <i className="fas fa-trash-alt" />
+              </button>
+
+              <button className="update-post" onClick={this.handleClickUpdate}>
+                <i className="fas fa-edit" />
+              </button>
+            </>
+          )}
         </p>
+        {/* if the comments exist, map over them */}
         {comments &&
           comments.map(comment => (
             <p className="comment" key={comment.id}>
@@ -102,9 +148,15 @@ class Post extends Component {
               <span className="timestamp">{` ${moment(
                 comment.created_at
               ).fromNow()}`}</span>
-              <span onClick={e => this.removeComment(e, comment.id)}>
-                <i className="fas fa-trash-alt" />
-              </span>
+              {/* if the comment belongs to the logged in user display the delete comment button */}
+              {this.state.user === comment.name && (
+                <button
+                  className="delete-post"
+                  onClick={e => this.removeComment(e, comment.id)}
+                >
+                  <i className="fas fa-trash-alt" />
+                </button>
+              )}
             </p>
           ))}
         <form onSubmit={this.handleSubmit}>
@@ -120,11 +172,18 @@ class Post extends Component {
     );
   }
 }
-const mapStateToProps = ({ userInfo }) => ({
-  userInfo
+const mapStateToProps = ({ userInfo, updatedPost }) => ({
+  userInfo,
+  updatedPost
 });
 
 export default connect(
   mapStateToProps,
-  { addComment, getBublPosts, removeComment, getUserInfo, removePost }
+  {
+    addComment,
+    getBublPosts,
+    removeComment,
+    getUserInfo,
+    removePost
+  }
 )(Post);

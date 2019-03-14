@@ -22,12 +22,6 @@ class SignUpForm extends Component {
     };
   }
   componentDidMount() {
-    // axios.get("https://build-week-bubl.herokuapp.com/api/schools").then(res =>
-    //   this.setState({
-    //     schools: res.data,
-    //     information: { ...this.state.information, school_id: res.data[0].id }
-    //   })
-    // );
     this.props.getSchoolsStart();
   }
   signUp = (e, info) => {
