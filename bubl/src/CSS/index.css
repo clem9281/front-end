@@ -164,6 +164,10 @@ textarea::placeholder {
   font-family: "Montserrat", sans-serif;
   font-size: 1.6rem;
 }
+section.main {
+  position: relative;
+  top: 70px;
+}
 .login,
 .signup-form {
   min-height: 100vh;
@@ -293,7 +297,10 @@ textarea::placeholder {
 nav {
   background: #5c7e78ff;
   height: 70px;
-  position: relative;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -350,9 +357,15 @@ nav .navbar-desktop-button {
   font-size: 2rem;
   font-weight: bold;
 }
+.post .post-content .name {
+  font-size: 1.9rem;
+  margin-right: 0.5%;
+  font-weight: bold;
+}
 .post .timestamp {
   color: grey;
   white-space: nowrap;
+  margin-left: 0.5%;
 }
 .post i {
   font-size: 2rem;
@@ -360,10 +373,12 @@ nav .navbar-desktop-button {
 }
 .post .comment-user {
   font-weight: 600;
+  font-size: 1.9rem;
 }
 .post .comment {
   width: 95%;
   margin: 2rem auto;
+  font-size: 1.5rem;
 }
 .post .delete-post,
 .post .update-post {
@@ -377,6 +392,21 @@ nav .navbar-desktop-button {
 .post i:hover {
   cursor: pointer;
   color: #b8e986;
+}
+.post .add-comment {
+  display: flex;
+  justify-content: center;
+}
+.post .add-comment input {
+  margin-right: 0.5%;
+  width: 20%;
+  border-radius: 5px;
+}
+.post .add-comment button {
+  border-radius: 5px;
+}
+.post .add-comment button:hover {
+  color: #66bb6a;
 }
 .interests {
   display: flex;
@@ -521,4 +551,39 @@ nav .navbar-desktop-button {
   border: 1px solid #00acc1;
   padding: 1rem;
   border-radius: 5px;
+}
+.post-list .title-container {
+  margin-top: 1%;
+  text-align: center;
+}
+.post-list .title-container button {
+  padding: 0.2% 1.5%;
+  border-radius: 15px;
+}
+.post-list .title-container h2 {
+  margin-top: 1%;
+}
+.post-list .add-post {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  margin: 0 auto;
+}
+.post-list .add-post .post-input {
+  padding: 5% 2%;
+  border-radius: 8px;
+}
+.post-list .add-post button {
+  margin: 2% auto;
+  padding: 1.5% 8%;
+  border-radius: 15px;
+}
+.post-list .add-post button:hover {
+  color: #66bb6a;
+}
+.main-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }

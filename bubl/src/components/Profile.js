@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 // components
 import UserPosts from "./UserPosts";
 import InterestList from "./InterestList";
+import FullPageLoader from "./FullPageLoader";
+import MainError from "./MainError";
+// actions
 import { getUserInfo } from "../actions";
 
 class Profile extends Component {
@@ -10,7 +13,9 @@ class Profile extends Component {
     this.props.getUserInfo();
   }
   render() {
-    console.log("profile render");
+    if (this.props.error) {
+      return <MainError />;
+    }
     if (this.props.userInfo) {
       const { bio, bubbles, id, name, picture, username } = this.props.userInfo;
       return (
@@ -26,18 +31,19 @@ class Profile extends Component {
           <div className="container">
             <h2>{name}</h2>
             <p>{bio}</p>
-            <InterestList />
+            <InterestList bubbles={bubbles} />
             <h3>My Recent Posts</h3>
             <UserPosts />
           </div>
         </section>
       );
     }
-    return <div> </div>;
+    // loading user info
+    return <FullPageLoader />;
   }
 }
 
-const mapStateToProps = ({ userInfo }) => ({ userInfo });
+const mapStateToProps = ({ userInfo, error }) => ({ userInfo, error });
 
 export default connect(
   mapStateToProps,

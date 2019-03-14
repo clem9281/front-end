@@ -1,19 +1,23 @@
 import React, { Component } from "react";
-import bublLogo from "../assets/bubl-logo.png";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { logOut } from "../actions";
+// actions
+import { logOut, toggleMenu } from "../actions";
+// components
 import DropDown from "./DropDown";
+// logo image
+import bublLogo from "../assets/bubl-logo.png";
 
 class NavBar extends Component {
   state = {
-    width: null,
-    dropdown: false
+    width: null
   };
   componentDidMount() {
+    // get the window width for the nav bad
     this.setState({ width: window.innerWidth });
     window.addEventListener("resize", this.handleResize);
   }
+  // remove the even listener
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
   }
@@ -25,7 +29,7 @@ class NavBar extends Component {
   };
   handleMenuClick = e => {
     e.preventDefault();
-    this.setState({ dropdown: !this.state.dropdown });
+    this.props.toggleMenu();
   };
   logOut = e => {
     this.props.logOut();
@@ -33,15 +37,21 @@ class NavBar extends Component {
   };
 
   render() {
+    console.log(this.props.history);
     return (
       <header>
         <nav>
           <div className="brand">
-            <a href="https://bubl-marketing.netlify.com/" target="_blank">
+            <a
+              href="https://bubl-marketing.netlify.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img src={bublLogo} alt="bubl logo" />
             </a>
           </div>
           <div className="links">
+            {/* if the width of the screen is greater than 600px display the inline nav, otherwise show the menu buton */}
             {this.state.width > 600 ? (
               <>
                 <NavLink exact to="/bubls">
@@ -50,7 +60,6 @@ class NavBar extends Component {
                 <NavLink exact to="/">
                   Profile
                 </NavLink>
-
                 <button className="navbar-desktop-button" onClick={this.logOut}>
                   Log Out
                 </button>
@@ -64,16 +73,19 @@ class NavBar extends Component {
               </button>
             )}
           </div>
-          {this.state.dropdown && <DropDown />}
+          {/* if menu open is true display the dropdown */}
+          {this.props.menuOpen && <DropDown />}
         </nav>
       </header>
     );
   }
 }
 
+const mapStateToProps = ({ menuOpen }) => ({ menuOpen });
+
 export default withRouter(
   connect(
-    null,
-    { logOut }
+    mapStateToProps,
+    { logOut, toggleMenu }
   )(NavBar)
 );
