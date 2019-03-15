@@ -83,7 +83,10 @@ export const getUserInfo = () => dispatch => {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(res => dispatch({ type: GETUSERINFO_SUCCESS, payload: res.data }))
+    .then(res => {
+      console.log(res);
+      dispatch({ type: GETUSERINFO_SUCCESS, payload: res.data });
+    })
     .catch(() =>
       dispatch({
         type: GETUSERINFO_FAILURE
@@ -253,10 +256,7 @@ export const removePost = id => dispatch => {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(res => {
-      console.log(res);
-      dispatch({ type: REMOVE_POST_SUCCESS });
-    })
+    .then(() => dispatch({ type: REMOVE_POST_SUCCESS }))
     .catch(err => {
       dispatch({
         type: REMOVE_POST_FAILURE,

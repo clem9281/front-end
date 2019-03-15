@@ -87,6 +87,7 @@ const initialState = {
   // view
   signupSuccess: false,
   menuOpen: false,
+  isLoggedIn: Boolean(localStorage.getItem("userToken")),
   // data
   schools: null,
   allSchoolBubls: null,
@@ -123,14 +124,16 @@ export const reducer = (state = initialState, action) => {
         ...state,
         loggingIn: false,
         error: null,
-        signupSuccess: false
+        signupSuccess: false,
+        isLoggedIn: true
       };
     case LOGIN_FAILURE:
       return {
         ...state,
         loggingIn: false,
         error: action.payload,
-        signupSuccess: false
+        signupSuccess: false,
+        isLoggedIn: false
       };
 
     // GET SCHOOLS
@@ -372,7 +375,9 @@ export const reducer = (state = initialState, action) => {
     // LOG OUT
     case LOG_OUT:
       return {
-        ...state
+        ...state,
+        ...initialState,
+        isLoggedIn: false
       };
     default:
       return state;

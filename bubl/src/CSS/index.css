@@ -434,7 +434,11 @@ nav .navbar-desktop-button {
   border-radius: 20px;
 }
 .bubls-area {
-  padding-top: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
 }
 @media (min-width: 1000px) {
   .bubls-area {
@@ -640,4 +644,5 @@ nav .navbar-desktop-button {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }

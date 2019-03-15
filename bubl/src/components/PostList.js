@@ -35,8 +35,7 @@ class PostList extends React.Component {
         }
       });
     }
-
-    // if the user info doesn't exist on the store, get it, set the userid on component state. If user info does exist, just set the user id on component state
+    // if the user info doesn't exist on the store, get it, set the userid on component state
     if (!this.props.userInfo) {
       this.props.getUserInfo().then(() => {
         if (this.props.error) {
@@ -48,13 +47,6 @@ class PostList extends React.Component {
               user_id: this.props.userInfo.id
             }
           });
-        }
-      });
-    } else {
-      this.setState({
-        postData: {
-          ...this.state.postData,
-          user_id: this.props.userInfo.id
         }
       });
     }
@@ -89,7 +81,15 @@ class PostList extends React.Component {
   // add post on submit
   addPost = e => {
     e.preventDefault();
-    this.props.addPost(this.state.postData).then(() =>
+
+    const newData =
+      this.state.postData.user_id === ""
+        ? {
+            ...this.state.postData,
+            user_id: this.props.userInfo.id
+          }
+        : this.state.postData;
+    this.props.addPost(newData).then(() =>
       this.setState({
         postData: {
           ...this.state.postData,
@@ -159,9 +159,11 @@ class PostList extends React.Component {
             </button>
             <h2>{bubble}</h2>
           </div>
+          {/* map over the posts */}
           {this.props.bublPosts.map(post => (
             <Post post={post} key={post.id} />
           ))}
+          {/* if we're adding a post show the loader, if there is an error show the error page */}
           {this.props.addingPost ? (
             <BlockLoader />
           ) : this.props.addPostError ? (

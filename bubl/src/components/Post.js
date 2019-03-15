@@ -199,7 +199,7 @@ class Post extends Component {
                     </button>
                   )}
                 </p>
-              ))}{" "}
+              ))}
           </>
         )}
 
