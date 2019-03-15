@@ -8,9 +8,7 @@ import BlockLoader from "./BlockLoader";
 import BlockError from "./BlockError";
 class UserPosts extends Component {
   componentDidMount() {
-    if (!this.props.userPosts && !this.props.error) {
-      this.props.getPostsStart();
-    }
+    this.props.getPostsStart();
   }
   render() {
     if (this.props.error) {

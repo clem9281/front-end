@@ -8,14 +8,16 @@ import {
   getBublPosts,
   removeComment,
   getUserInfo,
-  removePost,
+  deletePost,
   getPostsStart
 } from "../actions";
 // components
 import UpdateForm from "./UpdateForm";
 import MainError from "./MainError";
 import BlockLoader from "./BlockLoader";
+import BlockError from "./BlockError";
 
+// set deleting and updating loading and error in the local state so that only the post that is being acted on displays the error or loader: otherwise every post in the list shows it
 class Post extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,9 @@ class Post extends Component {
       user: "",
       userId: "",
       showForm: false,
-      postContent: ""
+      postContent: "",
+      deleting: false,
+      error: false
     };
   }
   componentDidMount() {
@@ -90,11 +94,16 @@ class Post extends Component {
     });
   };
   // handle remove post
-  removePost = (e, id) => {
+  deletePost = (e, id) => {
     e.preventDefault();
-    this.props.removePost(id).then(() => {
-      this.getData();
-    });
+    this.setState({ deleting: true });
+    this.props
+      .deletePost(id)
+      .then(() => {
+        this.getData();
+        this.setState({ error: this.props.deletePostError });
+      })
+      .then(() => this.setState({ deleting: false }));
   };
   // this opens the update form
   handleClickUpdate = () => {
@@ -143,6 +152,9 @@ class Post extends Component {
         />
       );
     }
+    if (this.props.deletingPost && this.state.deleting) {
+      return <BlockLoader />;
+    }
     return (
       <div className="post">
         <p className="post-content">
@@ -160,7 +172,7 @@ class Post extends Component {
             <>
               <button
                 className="delete-post"
-                onClick={e => this.removePost(e, id)}
+                onClick={e => this.deletePost(e, id)}
               >
                 <i className="fas fa-trash-alt" />
               </button>
@@ -202,7 +214,9 @@ class Post extends Component {
               ))}
           </>
         )}
-
+        {this.state.error && this.props.deletePostError && (
+          <BlockError text="We're sorry, we couldn't delete that post" />
+        )}
         {/* add a comment form */}
         <form className="add-comment" onSubmit={this.handleSubmit}>
           <input
@@ -217,11 +231,20 @@ class Post extends Component {
     );
   }
 }
-const mapStateToProps = ({ userInfo, updatedPost, error, commentLoading }) => ({
+const mapStateToProps = ({
   userInfo,
   updatedPost,
   error,
-  commentLoading
+  commentLoading,
+  deletingPost,
+  deletePostError
+}) => ({
+  userInfo,
+  updatedPost,
+  error,
+  commentLoading,
+  deletingPost,
+  deletePostError
 });
 
 export default withRouter(
@@ -232,7 +255,7 @@ export default withRouter(
       getBublPosts,
       removeComment,
       getUserInfo,
-      removePost,
+      deletePost,
       getPostsStart
     }
   )(Post)

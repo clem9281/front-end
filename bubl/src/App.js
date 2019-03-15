@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  withRouter
-} from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 // components
 import Login from "./components/Login";
@@ -12,6 +7,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import SignUpForm from "./components/SignUpForm";
 import Main from "./components/Main";
 import FullPageLoader from "./components/FullPageLoader";
+
 class App extends Component {
   render() {
     if (this.props.loggingOut) {

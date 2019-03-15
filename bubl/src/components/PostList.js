@@ -28,13 +28,12 @@ class PostList extends React.Component {
 
   componentDidMount() {
     // if the posts don't exist on the store, get them
-    if (!this.props.bublPosts) {
-      this.props.getBublPosts(this.props.match.params.id).then(() => {
-        if (this.props.error) {
-          this.setState({ error: true });
-        }
-      });
-    }
+    this.props.getBublPosts(this.props.match.params.id).then(() => {
+      if (this.props.error) {
+        this.setState({ error: true });
+      }
+    });
+
     // if the user info doesn't exist on the store, get it, set the userid on component state
     if (!this.props.userInfo) {
       this.props.getUserInfo().then(() => {

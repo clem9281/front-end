@@ -84,7 +84,6 @@ export const getUserInfo = () => dispatch => {
       }
     })
     .then(res => {
-      console.log(res);
       dispatch({ type: GETUSERINFO_SUCCESS, payload: res.data });
     })
     .catch(() =>
@@ -244,22 +243,22 @@ export const removeComment = id => dispatch => {
     );
 };
 // REMOVE A POST
-export const REMOVE_POST_START = "REMOVE_POST_START";
-export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS";
-export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
+export const DELETE_POST_START = "DELETE_POST_START";
+export const DELETE_POST_SUCCESS = "DELETE_POST_SUCCESS";
+export const DELETE_POST_FAILURE = "DELETE_POST_FAILURE";
 
-export const removePost = id => dispatch => {
-  dispatch({ type: REMOVE_POST_START });
+export const deletePost = id => dispatch => {
+  dispatch({ type: DELETE_POST_START });
   return axios
     .delete(`https://build-week-bubl.herokuapp.com/api/posts/${id}`, {
       headers: {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(() => dispatch({ type: REMOVE_POST_SUCCESS }))
+    .then(() => dispatch({ type: DELETE_POST_SUCCESS }))
     .catch(err => {
       dispatch({
-        type: REMOVE_POST_FAILURE,
+        type: DELETE_POST_FAILURE,
         payload: err.response.data.message
       });
     });

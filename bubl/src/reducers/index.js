@@ -41,6 +41,11 @@ import {
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
 
+  // DELETE POST
+  DELETE_POST_START,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_FAILURE,
+
   // JOIN BUBL
   JOINBUBL_START,
   JOINBUBL_SUCCESS,
@@ -82,6 +87,7 @@ const initialState = {
   signingUp: false,
   gettingSchoolBubls: false,
   addingPost: false,
+  deletingPost: false,
   commentLoading: false,
   updatingPost: false,
   // view
@@ -96,7 +102,8 @@ const initialState = {
   error: null,
   addPostError: null,
   userPosts: null,
-  userInfo: null
+  userInfo: null,
+  deletePostError: false
 };
 
 export const reducer = (state = initialState, action) => {
@@ -261,6 +268,25 @@ export const reducer = (state = initialState, action) => {
         addPostError: true
       };
 
+    // DELETE POST
+    case DELETE_POST_START:
+      return {
+        ...state,
+        deletingPost: true
+      };
+    case DELETE_POST_SUCCESS:
+      return {
+        ...state,
+        deletingPost: false,
+        deletePostError: null
+      };
+    case DELETE_POST_FAILURE:
+      return {
+        ...state,
+        deletingPost: false,
+        deletePostError: true
+      };
+
     // UPDATE POST
     case UPDATE_POST_START:
       return {
@@ -369,7 +395,8 @@ export const reducer = (state = initialState, action) => {
     case CLEAR_ERROR:
       return {
         ...state,
-        error: null
+        error: null,
+        deletePostError: false
       };
 
     // LOG OUT
