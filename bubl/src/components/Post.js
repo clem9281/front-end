@@ -8,15 +8,18 @@ import {
   getBublPosts,
   removeComment,
   getUserInfo,
-  removePost,
+  deletePost,
   getPostsStart
 } from "../actions";
 // components
 import UpdateForm from "./UpdateForm";
 import MainError from "./MainError";
 import BlockLoader from "./BlockLoader";
+import BlockError from "./BlockError";
 
+// set deleting and updating loading and error in the local state so that only the post that is being acted on displays the error or loader: otherwise every post in the list shows it
 class Post extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -27,10 +30,13 @@ class Post extends Component {
       user: "",
       userId: "",
       showForm: false,
-      postContent: ""
+      postContent: "",
+      deleting: false,
+      error: false
     };
   }
   componentDidMount() {
+    this._isMounted = true;
     // set the postContent to the post content passed down in props
     this.setState({
       ...this.state,
@@ -38,28 +44,37 @@ class Post extends Component {
     });
     // get the user info if it doesn't exist in the store, if it does exist in the store just set it to component state
     if (!this.props.userInfo) {
-      this.props.getUserInfo().then(() =>
+      this.props.getUserInfo().then(() => {
+        if (this._isMounted) {
+          this.setState({
+            user: this.props.userInfo.name,
+            userId: this.props.userInfo.id
+          });
+        }
+      });
+    } else {
+      if (this._isMounted) {
         this.setState({
           user: this.props.userInfo.name,
           userId: this.props.userInfo.id
-        })
-      );
-    } else {
-      this.setState({
-        user: this.props.userInfo.name,
-        userId: this.props.userInfo.id
-      });
+        });
+      }
     }
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
   }
   // handle comment form change
   handleChange = e => {
     e.preventDefault();
-    this.setState({
-      newComment: {
-        ...this.state.newComment,
-        [e.target.name]: e.target.value
-      }
-    });
+    if (this._isMounted) {
+      this.setState({
+        newComment: {
+          ...this.state.newComment,
+          [e.target.name]: e.target.value
+        }
+      });
+    }
   };
   // handle add comment
   handleSubmit = e => {
@@ -72,12 +87,14 @@ class Post extends Component {
         }
       })
       .then(() => {
-        this.setState({
-          newComment: {
-            ...this.state.newComment,
-            comment: ""
-          }
-        });
+        if (this._isMounted) {
+          this.setState({
+            newComment: {
+              ...this.state.newComment,
+              comment: ""
+            }
+          });
+        }
       });
   };
   // handle remove comment
@@ -90,19 +107,30 @@ class Post extends Component {
     });
   };
   // handle remove post
-  removePost = (e, id) => {
+  deletePost = (e, id) => {
     e.preventDefault();
-    this.props.removePost(id).then(() => {
-      this.getData();
-    });
+    this.setState({ deleting: true });
+    this.props
+      .deletePost(id)
+      .then(() => {
+        this.getData();
+        if (this._isMounted) {
+          this.setState({ error: this.props.deletePostError });
+        }
+      })
+      .then(() => this.setState({ deleting: false }));
   };
   // this opens the update form
   handleClickUpdate = () => {
-    this.setState({ showForm: !this.state.showForm });
+    if (this._isMounted) {
+      this.setState({ showForm: !this.state.showForm });
+    }
   };
   // this is for update form to call to update the post in this component
   updatePostContent = content => {
-    this.setState({ ...this.state, postContent: content });
+    if (this._isMounted) {
+      this.setState({ ...this.state, postContent: content });
+    }
   };
   // after adding or deleting a post or content we have to get the data again
   getData = () => {
@@ -143,6 +171,9 @@ class Post extends Component {
         />
       );
     }
+    if (this.props.deletingPost && this.state.deleting) {
+      return <BlockLoader />;
+    }
     return (
       <div className="post">
         <p className="post-content">
@@ -160,7 +191,7 @@ class Post extends Component {
             <>
               <button
                 className="delete-post"
-                onClick={e => this.removePost(e, id)}
+                onClick={e => this.deletePost(e, id)}
               >
                 <i className="fas fa-trash-alt" />
               </button>
@@ -199,10 +230,12 @@ class Post extends Component {
                     </button>
                   )}
                 </p>
-              ))}{" "}
+              ))}
           </>
         )}
-
+        {this.state.error && this.props.deletePostError && (
+          <BlockError text="We're sorry, we couldn't delete that post" />
+        )}
         {/* add a comment form */}
         <form className="add-comment" onSubmit={this.handleSubmit}>
           <input
@@ -217,11 +250,20 @@ class Post extends Component {
     );
   }
 }
-const mapStateToProps = ({ userInfo, updatedPost, error, commentLoading }) => ({
+const mapStateToProps = ({
   userInfo,
   updatedPost,
   error,
-  commentLoading
+  commentLoading,
+  deletingPost,
+  deletePostError
+}) => ({
+  userInfo,
+  updatedPost,
+  error,
+  commentLoading,
+  deletingPost,
+  deletePostError
 });
 
 export default withRouter(
@@ -232,7 +274,7 @@ export default withRouter(
       getBublPosts,
       removeComment,
       getUserInfo,
-      removePost,
+      deletePost,
       getPostsStart
     }
   )(Post)

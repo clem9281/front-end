@@ -15,6 +15,7 @@ import {
   GETSCHOOLS_FAILURE,
 
   // GET USER POSTS
+  GETPOSTS_START,
   GETPOSTS_FAILURE,
   GETPOSTS_SUCCESS,
 
@@ -24,10 +25,12 @@ import {
   SIGNUP_SUCCESS,
 
   // GET USER INFO
+  GETUSERINFO_START,
   GETUSERINFO_SUCCESS,
   GETUSERINFO_FAILURE,
 
   // GET POSTS FOR BUBL
+  GETBUBLPOSTS_START,
   GETBUBLPOSTS_SUCCESS,
   GETBUBLPOSTS_FAILURE,
 
@@ -40,6 +43,11 @@ import {
   ADD_POST_START,
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
+
+  // DELETE POST
+  DELETE_POST_START,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_FAILURE,
 
   // JOIN BUBL
   JOINBUBL_START,
@@ -82,11 +90,16 @@ const initialState = {
   signingUp: false,
   gettingSchoolBubls: false,
   addingPost: false,
+  deletingPost: false,
   commentLoading: false,
   updatingPost: false,
+  gettingBublPosts: false,
+  gettingUserInfo: false,
+  gettingUserPosts: false,
   // view
   signupSuccess: false,
   menuOpen: false,
+  isLoggedIn: Boolean(localStorage.getItem("userToken")),
   // data
   schools: null,
   allSchoolBubls: null,
@@ -95,7 +108,8 @@ const initialState = {
   error: null,
   addPostError: null,
   userPosts: null,
-  userInfo: null
+  userInfo: null,
+  deletePostError: false
 };
 
 export const reducer = (state = initialState, action) => {
@@ -123,14 +137,16 @@ export const reducer = (state = initialState, action) => {
         ...state,
         loggingIn: false,
         error: null,
-        signupSuccess: false
+        signupSuccess: false,
+        isLoggedIn: true
       };
     case LOGIN_FAILURE:
       return {
         ...state,
         loggingIn: false,
         error: action.payload,
-        signupSuccess: false
+        signupSuccess: false,
+        isLoggedIn: false
       };
 
     // GET SCHOOLS
@@ -176,44 +192,69 @@ export const reducer = (state = initialState, action) => {
       };
 
     // GET USER POSTS
+    case GETPOSTS_START:
+      return {
+        ...state,
+        gettingUserPosts: true
+      };
+
     case GETPOSTS_SUCCESS:
       return {
         ...state,
+        gettingUserPosts: false,
         userPosts: action.payload,
         error: null
       };
     case GETPOSTS_FAILURE:
       return {
         ...state,
+        gettingUserPosts: false,
         userPosts: null,
         error: action.payload
       };
 
     // GET USER INFO
+    case GETUSERINFO_START:
+      return {
+        ...state,
+        gettingUserInfo: true,
+        error: null,
+        userInfo: action.payload
+      };
     case GETUSERINFO_SUCCESS:
       return {
         ...state,
+        gettingUserInfo: false,
         error: null,
         userInfo: action.payload
       };
     case GETUSERINFO_FAILURE:
       return {
         ...state,
+        gettingUserInfo: false,
         user: null,
         error: true
       };
 
     // GET POSTS FOR BUBL
+    case GETBUBLPOSTS_START:
+      return {
+        ...state,
+        gettingBublPosts: true,
+        bublPosts: action.payload
+      };
     case GETBUBLPOSTS_SUCCESS:
       return {
         ...state,
         error: null,
+        gettingBublPosts: false,
         bublPosts: action.payload
       };
     case GETBUBLPOSTS_FAILURE:
       return {
         ...state,
         error: true,
+        gettingBublPosts: false,
         bublPosts: null
       };
 
@@ -256,6 +297,25 @@ export const reducer = (state = initialState, action) => {
         ...state,
         addingPost: false,
         addPostError: true
+      };
+
+    // DELETE POST
+    case DELETE_POST_START:
+      return {
+        ...state,
+        deletingPost: true
+      };
+    case DELETE_POST_SUCCESS:
+      return {
+        ...state,
+        deletingPost: false,
+        deletePostError: null
+      };
+    case DELETE_POST_FAILURE:
+      return {
+        ...state,
+        deletingPost: false,
+        deletePostError: true
       };
 
     // UPDATE POST
@@ -366,13 +426,16 @@ export const reducer = (state = initialState, action) => {
     case CLEAR_ERROR:
       return {
         ...state,
-        error: null
+        error: null,
+        deletePostError: false
       };
 
     // LOG OUT
     case LOG_OUT:
       return {
-        ...state
+        ...state,
+        ...initialState,
+        isLoggedIn: false
       };
     default:
       return state;

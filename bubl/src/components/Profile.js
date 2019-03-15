@@ -19,7 +19,7 @@ class Profile extends Component {
       );
     }
     if (this.props.userInfo) {
-      const { bio, bubbles, id, name, picture, username } = this.props.userInfo;
+      const { bio, bubbles, name } = this.props.userInfo;
       return (
         <section className="profile">
           <header />

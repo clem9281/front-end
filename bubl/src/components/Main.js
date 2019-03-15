@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Route, Redirect } from "react-router-dom";
 // components
 import NavBar from "./NavBar";
 import Profile from "./Profile";
@@ -10,12 +9,17 @@ import PrivateRoute from "./PrivateRoute";
 
 // actions
 import { closeMenu } from "../actions";
-const Main = props => {
+const Main = ({ menuOpen, closeMenu }) => {
   return (
     <article>
       <NavBar />
-      {/* close the menu when you click anywhere in main */}
-      <section className="main" onClick={props.closeMenu}>
+      {/* if the menu is open close the menu when you click anywhere in main */}
+      <section
+        className="main"
+        onClick={() => {
+          if (menuOpen) closeMenu();
+        }}
+      >
         <PrivateRoute exact path="/" component={Profile} />
         <PrivateRoute exact path="/bubls" component={Bubls} />
         <PrivateRoute exact path="/bubls/:id" component={PostList} />
@@ -24,7 +28,9 @@ const Main = props => {
   );
 };
 
+const mapStateToProps = ({ menuOpen }) => ({ menuOpen });
+
 export default connect(
-  null,
+  mapStateToProps,
   { closeMenu }
 )(Main);
