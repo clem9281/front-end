@@ -27,7 +27,7 @@ class PostList extends React.Component {
   };
 
   componentDidMount() {
-    // if the posts don't exist on the store, get them
+    // get the posts
     this.props.getBublPosts(this.props.match.params.id).then(() => {
       if (this.props.error) {
         this.setState({ error: true });
@@ -124,15 +124,20 @@ class PostList extends React.Component {
     if (this.state.error) {
       return <MainError text="Whoops, something went wrong." />;
     }
-    // this is basically just for joining or leaving a bubble
-    if (this.props.isLoading) {
+    // Loading states
+    if (
+      this.props.isLoading ||
+      this.props.gettingBublPosts ||
+      this.props.gettingSchoolBubls ||
+      this.props.gettingUserInfo
+    ) {
       return <FullPageLoader />;
     }
-    // wait to render until all the needed data exists in the store
+    // make sure all the data is here before moving on
     if (
-      this.props.bublPosts &&
       this.props.allSchoolBubls &&
-      this.props.userInfo
+      this.props.userInfo &&
+      this.props.bublPosts
     ) {
       // get the bubble name, call it bubl
       const bubble = this.props.allSchoolBubls.filter(
@@ -184,7 +189,7 @@ class PostList extends React.Component {
         </section>
       );
     }
-    return <FullPageLoader />;
+    return <div />;
   }
 }
 
@@ -195,7 +200,10 @@ const mapStateToProps = ({
   allSchoolBubls,
   isLoading,
   addingPost,
-  addPostError
+  addPostError,
+  gettingUserInfo,
+  gettingSchoolBubls,
+  gettingBublPosts
 }) => ({
   bublPosts,
   error,
@@ -203,7 +211,10 @@ const mapStateToProps = ({
   allSchoolBubls,
   isLoading,
   addingPost,
-  addPostError
+  addPostError,
+  gettingUserInfo,
+  gettingSchoolBubls,
+  gettingBublPosts
 });
 
 export default connect(

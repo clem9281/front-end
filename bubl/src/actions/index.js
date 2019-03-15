@@ -58,10 +58,12 @@ export const signUpStart = info => dispatch => {
 };
 
 // GET USER POSTS
+export const GETPOSTS_START = "GETPOSTS_START";
 export const GETPOSTS_SUCCESS = "GETPOSTS_SUCCESS";
 export const GETPOSTS_FAILURE = "GETPOSTS_FAILURE";
 
 export const getPostsStart = () => dispatch => {
+  dispatch({ type: GETPOSTS_START });
   return axios
     .get("https://build-week-bubl.herokuapp.com/api/posts", {
       headers: {
@@ -73,10 +75,12 @@ export const getPostsStart = () => dispatch => {
 };
 
 // GET USER INFO
+export const GETUSERINFO_START = "GETUSERINFO_START";
 export const GETUSERINFO_SUCCESS = "GETUSERINFO_SUCCESS";
 export const GETUSERINFO_FAILURE = "GETUSERINFO_FAILURE";
 
 export const getUserInfo = () => dispatch => {
+  dispatch({ type: GETUSERINFO_START });
   return axios
     .get("https://build-week-bubl.herokuapp.com/api/users/me", {
       headers: {
@@ -94,10 +98,12 @@ export const getUserInfo = () => dispatch => {
 };
 
 // GET POSTS FOR BUBL
+export const GETBUBLPOSTS_START = "GETBUBLPOSTS_START";
 export const GETBUBLPOSTS_SUCCESS = "GETBUBLPOSTS_SUCCESS";
 export const GETBUBLPOSTS_FAILURE = "GETBUBLPOSTS_FAILURE";
 
 export const getBublPosts = id => dispatch => {
+  dispatch({ type: GETBUBLPOSTS_START });
   return axios
     .get(`https://build-week-bubl.herokuapp.com/api/posts/filter/${id}`, {
       headers: {

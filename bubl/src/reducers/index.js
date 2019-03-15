@@ -15,6 +15,7 @@ import {
   GETSCHOOLS_FAILURE,
 
   // GET USER POSTS
+  GETPOSTS_START,
   GETPOSTS_FAILURE,
   GETPOSTS_SUCCESS,
 
@@ -24,10 +25,12 @@ import {
   SIGNUP_SUCCESS,
 
   // GET USER INFO
+  GETUSERINFO_START,
   GETUSERINFO_SUCCESS,
   GETUSERINFO_FAILURE,
 
   // GET POSTS FOR BUBL
+  GETBUBLPOSTS_START,
   GETBUBLPOSTS_SUCCESS,
   GETBUBLPOSTS_FAILURE,
 
@@ -90,6 +93,9 @@ const initialState = {
   deletingPost: false,
   commentLoading: false,
   updatingPost: false,
+  gettingBublPosts: false,
+  gettingUserInfo: false,
+  gettingUserPosts: false,
   // view
   signupSuccess: false,
   menuOpen: false,
@@ -186,44 +192,69 @@ export const reducer = (state = initialState, action) => {
       };
 
     // GET USER POSTS
+    case GETPOSTS_START:
+      return {
+        ...state,
+        gettingUserPosts: true
+      };
+
     case GETPOSTS_SUCCESS:
       return {
         ...state,
+        gettingUserPosts: false,
         userPosts: action.payload,
         error: null
       };
     case GETPOSTS_FAILURE:
       return {
         ...state,
+        gettingUserPosts: false,
         userPosts: null,
         error: action.payload
       };
 
     // GET USER INFO
+    case GETUSERINFO_START:
+      return {
+        ...state,
+        gettingUserInfo: true,
+        error: null,
+        userInfo: action.payload
+      };
     case GETUSERINFO_SUCCESS:
       return {
         ...state,
+        gettingUserInfo: false,
         error: null,
         userInfo: action.payload
       };
     case GETUSERINFO_FAILURE:
       return {
         ...state,
+        gettingUserInfo: false,
         user: null,
         error: true
       };
 
     // GET POSTS FOR BUBL
+    case GETBUBLPOSTS_START:
+      return {
+        ...state,
+        gettingBublPosts: true,
+        bublPosts: action.payload
+      };
     case GETBUBLPOSTS_SUCCESS:
       return {
         ...state,
         error: null,
+        gettingBublPosts: false,
         bublPosts: action.payload
       };
     case GETBUBLPOSTS_FAILURE:
       return {
         ...state,
         error: true,
+        gettingBublPosts: false,
         bublPosts: null
       };
 
