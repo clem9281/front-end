@@ -2,31 +2,30 @@ import React, { Component } from "react";
 import { Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 // components
-import Login from "./components/Login";
-import PrivateRoute from "./components/PrivateRoute";
-import SignUpForm from "./components/SignUpForm";
-import Main from "./components/Main";
-import FullPageLoader from "./components/FullPageLoader";
+import {
+  Login,
+  PrivateRoute,
+  SignUpForm,
+  NavBar,
+  Profile,
+  Bubls,
+  PostList
+} from "./components";
 
 class App extends Component {
   render() {
-    if (this.props.loggingOut) {
-      return <FullPageLoader />;
-    }
     return (
       <div className="App">
+        <NavBar />
         <Route path="/login" exact render={props => <Login {...props} />} />
         <Route
           path="/signup"
           exact
           render={props => <SignUpForm {...props} />}
         />
-        {/* basically we need the exact property to be true for the login redirect, but false while the user is within the app */}
-        <PrivateRoute
-          path="/"
-          exact={!this.props.isLoggedIn}
-          component={Main}
-        />
+        <PrivateRoute exact path="/" component={Profile} />
+        <PrivateRoute exact path="/bubls" component={Bubls} />
+        <PrivateRoute exact path="/bubls/:id" component={PostList} />
       </div>
     );
   }
