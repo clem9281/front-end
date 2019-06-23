@@ -1,23 +1,24 @@
 import React, { Component } from "react";
 import { Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+// utils
+import withNavigation from "./utils/withNavigation";
 // components
 import {
-  Login,
   PrivateRoute,
   SignUpForm,
-  NavBar,
   Profile,
   Bubls,
   PostList
 } from "./components";
+// views
+import { LoginView } from "./views";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <NavBar />
-        <Route path="/login" exact render={props => <Login {...props} />} />
+        <Route path="/login" exact render={props => <LoginView {...props} />} />
         <Route
           path="/signup"
           exact
@@ -39,5 +40,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     {}
-  )(App)
+  )(withNavigation(App))
 );

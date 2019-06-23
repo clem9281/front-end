@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 // logo image
 import bublLogo from "../assets/bubl-logo.png";
 // actions
-import { signUpStart, getSchoolsStart, clearError } from "../actions";
+import {
+  signUpStart,
+  getSchoolsStart,
+  clearError,
+  loginStart
+} from "../actions";
 // components
 import Loader from "react-loader-spinner";
 import LoginError from "./LoginError";
@@ -42,13 +47,19 @@ class SignUpForm extends Component {
     console.log(this.state.information);
     this.props
       .signUpStart(info)
-      .then(() => !this.props.error && this.props.history.push("/login"));
+      // .then(() => !this.props.error && this.props.history.push("/"));
+      .then(() =>
+        this.props.loginStart({
+          username: this.state.information.username,
+          password: this.state.information.password
+        })
+      )
+      .then(() => !this.props.error && this.props.history.push("/"));
   };
   // form change: if changing the school we need to get it's id
   handleChange = e => {
     console.log(e.target.name);
     if (e.target.name === "school_id") {
-      console.log("here");
       this.setState({
         information: {
           ...this.state.information,
@@ -152,5 +163,5 @@ const mapStateToProps = ({
 
 export default connect(
   mapStateToProps,
-  { signUpStart, getSchoolsStart, clearError }
+  { signUpStart, getSchoolsStart, clearError, loginStart }
 )(SignUpForm);
