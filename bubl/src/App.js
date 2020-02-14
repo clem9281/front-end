@@ -4,15 +4,15 @@ import { connect } from "react-redux";
 // utils
 import withNavigation from "./utils/withNavigation";
 // components
-import {
-  PrivateRoute,
-  SignUpForm,
-  Profile,
-  Bubls,
-  PostList
-} from "./components";
+import { PrivateRoute } from "./components";
 // views
-import { LoginView } from "./views";
+import {
+  LoginView,
+  SignUpView,
+  ProfileView,
+  BublsView,
+  SingleBublView
+} from "./views";
 
 class App extends Component {
   render() {
@@ -22,11 +22,11 @@ class App extends Component {
         <Route
           path="/signup"
           exact
-          render={props => <SignUpForm {...props} />}
+          render={props => <SignUpView {...props} />}
         />
-        <PrivateRoute exact path="/" component={Profile} />
-        <PrivateRoute exact path="/bubls" component={Bubls} />
-        <PrivateRoute exact path="/bubls/:id" component={PostList} />
+        <PrivateRoute exact path="/" component={ProfileView} />
+        <PrivateRoute exact path="/bubls" component={BublsView} />
+        <PrivateRoute exact path="/bubls/:id" component={SingleBublView} />
       </div>
     );
   }
@@ -36,9 +36,4 @@ const mapStateToProps = ({ loggingOut, isLoggedIn }) => ({
   isLoggedIn
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    {}
-  )(withNavigation(App))
-);
+export default withRouter(connect(mapStateToProps, {})(withNavigation(App)));

@@ -213,7 +213,7 @@ export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
 
 export const addComment = newComment => dispatch => {
-  dispatch({ type: ADD_COMMENT_START });
+  dispatch({ type: ADD_COMMENT_START, payload: newComment.post_id });
   return axios
     .post(`https://build-week-bubl.herokuapp.com/api/comments`, newComment, {
       headers: {
@@ -254,14 +254,17 @@ export const DELETE_POST_SUCCESS = "DELETE_POST_SUCCESS";
 export const DELETE_POST_FAILURE = "DELETE_POST_FAILURE";
 
 export const deletePost = id => dispatch => {
-  dispatch({ type: DELETE_POST_START });
+  dispatch({ type: DELETE_POST_START, payload: id });
   return axios
     .delete(`https://build-week-bubl.herokuapp.com/api/posts/${id}`, {
       headers: {
         Authorization: localStorage.getItem("userToken")
       }
     })
-    .then(() => dispatch({ type: DELETE_POST_SUCCESS }))
+    .then(res => {
+      console.log(res);
+      dispatch({ type: DELETE_POST_SUCCESS });
+    })
     .catch(err => {
       dispatch({
         type: DELETE_POST_FAILURE,

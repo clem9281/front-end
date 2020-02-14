@@ -7,56 +7,39 @@ import {
   getSchoolBubls,
   joinBubl,
   leaveBubl,
-  getBublPosts
+  getBublPosts,
+  deletePost,
+  addComment
 } from "../actions";
-// reducer
-import Post from "./Post";
-import FullPageLoader from "./FullPageLoader";
-import MainError from "./MainError";
-import BlockLoader from "./BlockLoader";
-import BlockError from "./BlockError";
+// components
+import {
+  Post,
+  FullPageLoader,
+  MainError,
+  BlockLoader,
+  BlockError
+} from "../components";
 
 class PostList extends React.Component {
   state = {
     postData: {
-      user_id: "",
       post_content: "",
       bubbles: ""
-    },
-    error: false
+    }
   };
 
   componentDidMount() {
     // get the posts
-    this.props.getBublPosts(this.props.match.params.id).then(() => {
-      if (this.props.error) {
-        this.setState({ error: true });
-      }
-    });
+    this.props.getBublPosts(this.props.match.params.id);
 
-    // if the user info doesn't exist on the store, get it, set the userid on component state
+    // if the user info doesn't exist on the store, get it
     if (!this.props.userInfo) {
-      this.props.getUserInfo().then(() => {
-        if (this.props.error) {
-          this.setState({ error: true });
-        } else {
-          this.setState({
-            postData: {
-              ...this.state.postData,
-              user_id: this.props.userInfo.id
-            }
-          });
-        }
-      });
+      this.props.getUserInfo();
     }
 
     // if all the bubls don't exist on the store, get them
     if (!this.props.allSchoolBubls) {
-      this.props.getSchoolBubls().then(() => {
-        if (this.props.error) {
-          this.setState({ error: this.props.error });
-        }
-      });
+      this.props.getSchoolBubls();
     }
 
     // the bubbles property is needed for the post request to add a post, set it to this bubble
@@ -69,7 +52,8 @@ class PostList extends React.Component {
   }
   // handle form change
   handleChange = e => {
-    e.preventDefault();
+    e.persist();
+
     this.setState({
       postData: {
         ...this.state.postData,
@@ -80,14 +64,10 @@ class PostList extends React.Component {
   // add post on submit
   addPost = e => {
     e.preventDefault();
-
-    const newData =
-      this.state.postData.user_id === ""
-        ? {
-            ...this.state.postData,
-            user_id: this.props.userInfo.id
-          }
-        : this.state.postData;
+    const newData = {
+      ...this.state.postData,
+      user_id: this.props.userInfo.id
+    };
     this.props.addPost(newData).then(() =>
       this.setState({
         postData: {
@@ -112,38 +92,33 @@ class PostList extends React.Component {
   handleLeave = (e, id) => {
     e.preventDefault();
     this.props.leaveBubl(id).then(() => {
-      if (this.props.error) {
-        this.setState({ error: true });
-      } else {
+      if (!this.props.error) {
         this.props.history.push("/bubls");
       }
     });
   };
+  // getData is called from the post component
+  getData = id => {
+    // if params.id is undefined get the user data, else get the bubl post data. Params.id would be undefined if this component is rendered from the profile view
+
+    this.props.getBublPosts(id);
+  };
   render() {
-    // if there is an error load the error page
-    if (this.state.error) {
+    // if there is an error getting the bubl info load the error page
+    if (this.props.error) {
       return <MainError text="Whoops, something went wrong." />;
-    }
-    // Loading states
-    if (
-      this.props.isLoading ||
-      this.props.gettingBublPosts ||
-      this.props.gettingSchoolBubls ||
-      this.props.gettingUserInfo
-    ) {
-      return <FullPageLoader />;
     }
     // make sure all the data is here before moving on
     if (
-      this.props.allSchoolBubls &&
       this.props.userInfo &&
-      this.props.bublPosts
+      this.props.bublPosts &&
+      this.props.allSchoolBubls
     ) {
-      // get the bubble name, call it bubl
+      //   // get the bubble name, call it bubl
       const bubble = this.props.allSchoolBubls.filter(
         bubl => bubl.id === Number(this.props.match.params.id)
       )[0].bubble;
-      // determine if user is a member of this bubl
+      //   // determine if user is a member of this bubl
       const isMember =
         this.props.userInfo.bubbles.filter(
           bubl => bubl.id === Number(this.props.match.params.id)
@@ -165,7 +140,16 @@ class PostList extends React.Component {
           </div>
           {/* map over the posts */}
           {this.props.bublPosts.map(post => (
-            <Post post={post} key={post.id} />
+            <Post
+              post={post}
+              key={post.id}
+              user={this.props.userInfo}
+              deletePost={this.props.deletePost}
+              getBublPosts={this.props.getBublPosts}
+              postState={this.props.postState}
+              getData={this.getData}
+              addComment={this.props.addComment}
+            />
           ))}
           {/* if we're adding a post show the loader, if there is an error show the error page */}
           {this.props.addingPost ? (
@@ -189,35 +173,31 @@ class PostList extends React.Component {
         </section>
       );
     }
-    return <div />;
+    return <FullPageLoader />;
   }
 }
 
-const mapStateToProps = ({
-  bublPosts,
-  error,
-  userInfo,
-  allSchoolBubls,
-  isLoading,
-  addingPost,
-  addPostError,
-  gettingUserInfo,
-  gettingSchoolBubls,
-  gettingBublPosts
-}) => ({
-  bublPosts,
-  error,
-  userInfo,
-  allSchoolBubls,
-  isLoading,
-  addingPost,
-  addPostError,
-  gettingUserInfo,
-  gettingSchoolBubls,
-  gettingBublPosts
+const mapStateToProps = ({ bublState, userState, postState }) => ({
+  bublPosts: bublState.bublPosts,
+  error: bublState.error,
+  userInfo: userState.userInfo,
+  allSchoolBubls: bublState.allSchoolBubls,
+  isLoading: bublState.isLoading,
+  addingPost: bublState.addingPost,
+  addPostError: bublState.addPostError,
+  gettingUserInfo: userState.gettingUserInfo,
+  gettingSchoolBubls: bublState.gettingSchoolBubls,
+  gettingBublPosts: bublState.gettingBublPosts,
+  postState: postState
 });
 
-export default connect(
-  mapStateToProps,
-  { getBublPosts, addPost, getUserInfo, getSchoolBubls, joinBubl, leaveBubl }
-)(PostList);
+export default connect(mapStateToProps, {
+  getBublPosts,
+  addPost,
+  getUserInfo,
+  getSchoolBubls,
+  joinBubl,
+  leaveBubl,
+  deletePost,
+  addComment
+})(PostList);

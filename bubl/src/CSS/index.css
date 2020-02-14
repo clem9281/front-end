@@ -164,9 +164,13 @@ textarea::placeholder {
   font-family: "Montserrat", sans-serif;
   font-size: 1.6rem;
 }
-section.main {
+section {
   position: relative;
   top: 70px;
+}
+section.login,
+section.signup-form {
+  top: 0;
 }
 .login,
 .signup-form {
