@@ -9,7 +9,8 @@ import {
   leaveBubl,
   getBublPosts,
   deletePost,
-  addComment
+  addComment,
+  removeComment
 } from "../actions";
 // components
 import {
@@ -149,6 +150,7 @@ class PostList extends React.Component {
               postState={this.props.postState}
               getData={this.getData}
               addComment={this.props.addComment}
+              removeComment={this.props.removeComment}
             />
           ))}
           {/* if we're adding a post show the loader, if there is an error show the error page */}
@@ -199,5 +201,6 @@ export default connect(mapStateToProps, {
   joinBubl,
   leaveBubl,
   deletePost,
-  addComment
+  addComment,
+  removeComment
 })(PostList);

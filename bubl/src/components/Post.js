@@ -64,7 +64,7 @@ class Post extends Component {
     e.preventDefault();
     this.props.removeComment(id).then(() => {
       if (!this.props.error) {
-        this.getData();
+        this.props.getData(this.props.match.params.id);
       }
     });
   };
@@ -124,7 +124,7 @@ class Post extends Component {
       <div className="post">
         <p className="post-content">
           {/* post owner name: when post is created from postlist it comes with a name property, so use that. if post is created from the userposts it doesn't have a name property, so use the current user's name */}
-          <span className="name">{name ? name : this.props.userInfo.name}</span>
+          <span className="name">{name ? name : this.props.user.name}</span>
 
           {/* post content */}
           {post_content}
@@ -133,7 +133,7 @@ class Post extends Component {
           <span className="timestamp">{postTimestamp}</span>
 
           {/* if the post belongs to the logged in user, display the delete and update post buttons */}
-          {this.props.user.name === name && (
+          {(this.props.user.name === name || !name) && (
             <>
               <button
                 className="delete-post"
@@ -147,53 +147,51 @@ class Post extends Component {
             </>
           )}
         </p>
-        {this.props.postState.commentLoading &&
-        this.props.postState.commentLoadingAtId === this.props.post.id ? (
-          <BlockLoader />
-        ) : (
-          <>
-            {/* if the comments exist, map over them */}
-            {comments &&
-              comments.map(comment => (
-                <p className="comment" key={comment.id}>
-                  {/* commenter name */}
-                  <span className="comment-user">{comment.name} </span>
+        {/* if the comments exist, map over them */}
+        {comments &&
+          comments.map(comment => (
+            <p className="comment" key={comment.id}>
+              {/* commenter name */}
+              <span className="comment-user">{comment.name} </span>
 
-                  {/* comment content */}
-                  {comment.comment}
+              {/* comment content */}
+              {comment.comment}
 
-                  {/* timestamp from moment */}
-                  <span className="timestamp">
-                    {moment(comment.created_at).fromNow()}
-                  </span>
+              {/* timestamp from moment */}
+              <span className="timestamp">
+                {moment(comment.created_at).fromNow()}
+              </span>
 
-                  {/* if the comment belongs to the logged in user display the delete comment button */}
-                  {this.props.user.name === comment.name && (
-                    <button
-                      className="delete-post"
-                      onClick={e => this.removeComment(e, comment.id)}
-                    >
-                      <i className="fas fa-trash-alt" />
-                    </button>
-                  )}
-                </p>
-              ))}
-          </>
-        )}
+              {/* if the comment belongs to the logged in user display the delete comment button */}
+              {this.props.user.name === comment.name && (
+                <button
+                  className="delete-post"
+                  onClick={e => this.removeComment(e, comment.id)}
+                >
+                  <i className="fas fa-trash-alt" />
+                </button>
+              )}
+            </p>
+          ))}
+
         {this.props.postState.deletePostError &&
           this.props.postState.deletingPostId === this.props.post.id && (
             <BlockError text="We're sorry, we couldn't delete that post" />
           )}
-        {/* add a comment form */}
-        <form className="add-comment" onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            name="comment"
-            value={this.state.newComment.comment}
-            onChange={this.handleChange}
-          />
-          <button>Add Comment</button>
-        </form>
+        {this.props.postState.commentLoading &&
+        this.props.postState.commentLoadingAtId === this.props.post.id ? (
+          <BlockLoader />
+        ) : (
+          <form className="add-comment" onSubmit={this.handleSubmit}>
+            <input
+              type="text"
+              name="comment"
+              value={this.state.newComment.comment}
+              onChange={this.handleChange}
+            />
+            <button>Add Comment</button>
+          </form>
+        )}
       </div>
     );
   }

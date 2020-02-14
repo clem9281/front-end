@@ -1,6 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getUserInfo, getPostsStart } from "../actions";
+import {
+  getUserInfo,
+  getPostsStart,
+  deletePost,
+  addComment,
+  removeComment
+} from "../actions";
 import { FullPageLoader, MainError, UserPosts } from "../components";
 
 class ProfileView extends React.Component {
@@ -8,6 +14,9 @@ class ProfileView extends React.Component {
     this.props.getUserInfo();
     this.props.getPostsStart();
   }
+  getData = () => {
+    this.props.getPostsStart();
+  };
   render() {
     if (this.props.error) {
       return (
@@ -31,7 +40,15 @@ class ProfileView extends React.Component {
             <p className="bio">{bio}</p>
             {/* <InterestList bubbles={bubbles} /> */}
             <h3>My Recent Posts</h3>
-            <UserPosts userPosts={this.props.userPosts} />
+            <UserPosts
+              userPosts={this.props.userPosts}
+              addComment={this.props.addComment}
+              deletePost={this.props.deletePost}
+              removeComment={this.props.removeComment}
+              postState={this.props.postState}
+              userInfo={this.props.userInfo}
+              getData={this.getData}
+            />
           </div>
         </section>
       );
@@ -41,9 +58,16 @@ class ProfileView extends React.Component {
   }
 }
 
-const mSTP = ({ userState }) => ({
+const mSTP = ({ userState, postState }) => ({
   userInfo: userState.userInfo,
   error: userState.error,
-  userPosts: userState.userPosts
+  userPosts: userState.userPosts,
+  postState: postState
 });
-export default connect(mSTP, { getUserInfo, getPostsStart })(ProfileView);
+export default connect(mSTP, {
+  getUserInfo,
+  getPostsStart,
+  addComment,
+  deletePost,
+  removeComment
+})(ProfileView);
